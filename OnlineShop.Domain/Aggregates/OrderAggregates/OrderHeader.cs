@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Domain.Aggregates.Product
+namespace OnlineShop.Domain.Aggregates.OrderAggregates
 {
-    internal class Product
+    public class OrderHeader
     {
     }
 }
