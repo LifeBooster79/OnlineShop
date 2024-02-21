@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineShop.Domain.Aggregates.UserManagementAggregates;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,12 @@ namespace OnlineShop.Domain.Aggregates.OrderAggregates
 {
     public class OrderHeader
     {
+        public Guid Id { get; set; }
+
+        public DateTime OrderDate { get; set; }
+
+        public  OnlineShopUser Seller { get; set; }
+        public OnlineShopUser Buyer { get; set; }
+        public List<OrderDetail>? OrderDetails { get; set; }
     }
 }
