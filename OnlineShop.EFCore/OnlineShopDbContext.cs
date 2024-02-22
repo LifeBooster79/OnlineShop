@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Domain.Aggregates.UserManagementAggregates;
-using OnlineShop.Domain.Aggregates.OrderAggregates;
-using System.Reflection.Emit;
-using OnlineShop.Domain.Aggregates.ProductAggregates;
+using OnlineShop.Domain.Aggregates.SaleAggregates;
+using System.Reflection;
 
 
 namespace OnlineShop.EFCore
@@ -13,20 +12,39 @@ namespace OnlineShop.EFCore
         IdentityUserClaim<string>, OnlineShopUserRole, IdentityUserLogin<string>,
         IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
-        public DbSet<Product> products { get; set; }
-        public DbSet<ProductCategory> categories { get; set; }
-        public DbSet<OrderHeader> orders { get; set; }
-        public DbSet<OrderDetail> ordersDetail { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }
+        public DbSet<OrderHeader> OrderHeader { get; set; }
+        public DbSet<OrderDetail> OrderDetail { get; set; }
         public OnlineShopDbContext(DbContextOptions options) : base(options)
         {
             
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        //protected override void OnModelCreating(ModelBuilder builder)
+        //{
+
+        //    base.OnModelCreating(builder);
+        //}
+
+        #region [- ConfigureConventions(ModelConfigurationBuilder configurationBuilder) -]
+        //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        //{
+
+        //}
+        #endregion
+
+        #region [- OnModelCreating(ModelBuilder modelBuilder) -]
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-            base.OnModelCreating(builder);
+
+            #region [- ApplyConfigurationsFromAssembly() -]
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            #endregion
+
+            base.OnModelCreating(modelBuilder);
         }
+        #endregion
 
 
     }

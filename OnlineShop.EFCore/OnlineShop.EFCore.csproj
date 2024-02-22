@@ -18,6 +18,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineShop.Domain\OnlineShop.Domain.csproj" />
+    <ProjectReference Include="..\PublicTools\PublicTools.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Configurations\UserManagementConfigurations\" />
   </ItemGroup>
 
 </Project>

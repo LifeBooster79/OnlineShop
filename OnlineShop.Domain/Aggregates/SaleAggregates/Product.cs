@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Domain.Aggregates.ProductAggregates
+namespace OnlineShop.Domain.Aggregates.SaleAggregates
 {
     public class Product
     {
