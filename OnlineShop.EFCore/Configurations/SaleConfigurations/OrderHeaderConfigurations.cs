@@ -14,7 +14,7 @@ namespace OnlineShop.EFCore.Configurations.SaleConfigurations
     {
         public void Configure(EntityTypeBuilder<OrderHeader> builder)
         {
-            builder.ToTable(nameof(OrderDetail), Sales.schemaName);
+            builder.ToTable(nameof(OrderHeader), Sales.schemaName);
             builder.HasKey(p => new
             {
                 p.Id,

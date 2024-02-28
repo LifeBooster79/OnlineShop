@@ -1,24 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OnlineShop.Domain.Aggregates.SaleAggregates;
-using PublicTools.DbConstants.Schemas;
+using OnlineShop.Domain.Aggregates.UserManagementAggregates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.EFCore.Configurations.SaleConfigurations
+namespace OnlineShop.EFCore.Configurations.UserManagementConfigurations
 {
-    public class ProductCategoryConfigurations: IEntityTypeConfiguration<ProductCategory>
+    public class OnlineShopUserRoleConfiguration: IEntityTypeConfiguration<OnlineShopUserRole>
     {
-        public void Configure(EntityTypeBuilder<ProductCategory> builder)
+        public void Configure(EntityTypeBuilder<OnlineShopUserRole> builder)
         {
-            builder.ToTable(nameof(ProductCategory), Sales.schemaName);
             builder.HasKey(p => new
             {
-                p.Id
+                p.UserId,
+                p.RoleId,
             });
+
         }
     }
 }

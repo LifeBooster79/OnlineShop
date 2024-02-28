@@ -21,19 +21,6 @@ namespace OnlineShop.EFCore
             
         }
 
-        //protected override void OnModelCreating(ModelBuilder builder)
-        //{
-
-        //    base.OnModelCreating(builder);
-        //}
-
-        #region [- ConfigureConventions(ModelConfigurationBuilder configurationBuilder) -]
-        //protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-        //{
-
-        //}
-        #endregion
-
         #region [- OnModelCreating(ModelBuilder modelBuilder) -]
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

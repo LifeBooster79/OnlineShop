@@ -9,6 +9,6 @@ namespace OnlineShop.Domain.Aggregates.UserManagementAggregates
 {
     public class OnlineShopRole:IdentityRole
     {
-
+        //Fields
     }
 }
