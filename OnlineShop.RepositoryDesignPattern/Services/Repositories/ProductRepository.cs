@@ -13,9 +13,9 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
     {
         public ProductRepository(OnlineShopDbContext context) : base(context) { 
         
-        
             
-        
+            
+            
         }
     }
 }

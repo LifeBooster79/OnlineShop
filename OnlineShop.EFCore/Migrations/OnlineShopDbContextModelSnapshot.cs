@@ -253,7 +253,7 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<DateTime>("DateCreatedLatin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 2, 29, 11, 8, 27, 673, DateTimeKind.Local).AddTicks(2874));
+                        .HasDefaultValue(new DateTime(2024, 3, 6, 5, 44, 25, 493, DateTimeKind.Local).AddTicks(6781));
 
                     b.Property<string>("DateCreatedPersian")
                         .HasColumnType("nvarchar(max)");

@@ -45,7 +45,7 @@ namespace OnlineShop.EFCore.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DateSoftDeletedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateSoftDeletedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreatedLatin = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 2, 29, 1, 39, 35, 364, DateTimeKind.Local).AddTicks(4804)),
+                    DateCreatedLatin = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 6, 5, 44, 25, 493, DateTimeKind.Local).AddTicks(6781)),
                     DateCreatedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsModified = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DateModifiedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),

@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Framework\Abstract\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineShop.RepositoryDesignPattern\OnlineShop.RepositoryDesignPattern.csproj" />
+  </ItemGroup>
+
 </Project>

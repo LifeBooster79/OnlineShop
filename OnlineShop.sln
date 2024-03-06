@@ -9,13 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02_Frontend", "02_Frontend"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_Common", "03_Common", "{75D5E841-68FB-4705-BA33-615C178334F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicTools", "PublicTools\PublicTools.csproj", "{DBDD46D4-088B-48B4-8638-118774566577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PublicTools", "PublicTools\PublicTools.csproj", "{DBDD46D4-088B-48B4-8638-118774566577}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResponseFramework", "ResponseFramework\ResponseFramework.csproj", "{1938A2E3-2125-4182-9C38-C2E0C4336571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResponseFramework", "ResponseFramework\ResponseFramework.csproj", "{1938A2E3-2125-4182-9C38-C2E0C4336571}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Backoffice", "OnlineShop.Backoffice\OnlineShop.Backoffice.csproj", "{BB75F5E6-F2D7-4645-BEAF-1F2A902B86A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Backoffice", "OnlineShop.Backoffice\OnlineShop.Backoffice.csproj", "{BB75F5E6-F2D7-4645-BEAF-1F2A902B86A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Office", "OnlineShop.Office\OnlineShop.Office.csproj", "{69EB58E4-1FD9-409D-A9AB-6FDAB97569E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Office", "OnlineShop.Office\OnlineShop.Office.csproj", "{69EB58E4-1FD9-409D-A9AB-6FDAB97569E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01_Endpoint", "01_Endpoint", "{DB3B4E90-591B-4E17-B256-062BD6CD5D20}"
 EndProject
@@ -25,17 +25,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03_Domain", "03_Domain", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04_Infrastructure", "04_Infrastructure", "{F1EFB0F7-2307-47FA-8A6E-331397A8A97E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Domain", "OnlineShop.Domain\OnlineShop.Domain.csproj", "{CBF0E0A4-9D3F-4DB2-9C3B-D37DDCB7AF56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Domain", "OnlineShop.Domain\OnlineShop.Domain.csproj", "{CBF0E0A4-9D3F-4DB2-9C3B-D37DDCB7AF56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Application", "OnlineShop.Application\OnlineShop.Application.csproj", "{E025D5BC-C096-49A8-A0EC-3D5AE318976B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Application", "OnlineShop.Application\OnlineShop.Application.csproj", "{E025D5BC-C096-49A8-A0EC-3D5AE318976B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Backoffice.WebApiEndpoint", "OnlineShop.Backoffice.WebApiEndpoint\OnlineShop.Backoffice.WebApiEndpoint.csproj", "{33C431C7-1F60-4B49-86A4-35C01002FFDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Backoffice.WebApiEndpoint", "OnlineShop.Backoffice.WebApiEndpoint\OnlineShop.Backoffice.WebApiEndpoint.csproj", "{33C431C7-1F60-4B49-86A4-35C01002FFDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Office.WebApiEndpoint", "OnlineShop.Office.WebApiEndpoint\OnlineShop.Office.WebApiEndpoint.csproj", "{B71443C3-16E6-4D13-8DEC-C773728B64DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Office.WebApiEndpoint", "OnlineShop.Office.WebApiEndpoint\OnlineShop.Office.WebApiEndpoint.csproj", "{B71443C3-16E6-4D13-8DEC-C773728B64DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.EFCore", "OnlineShop.EFCore\OnlineShop.EFCore.csproj", "{5E0EB5BC-7749-48C8-8199-F40932B76DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.EFCore", "OnlineShop.EFCore\OnlineShop.EFCore.csproj", "{5E0EB5BC-7749-48C8-8199-F40932B76DF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.RepositoryDesignPattern", "OnlineShop.RepositoryDesignPattern\OnlineShop.RepositoryDesignPattern.csproj", "{B7DE9D6E-F636-49E7-81A3-5FDB78D2157E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.RepositoryDesignPattern", "OnlineShop.RepositoryDesignPattern\OnlineShop.RepositoryDesignPattern.csproj", "{B7DE9D6E-F636-49E7-81A3-5FDB78D2157E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

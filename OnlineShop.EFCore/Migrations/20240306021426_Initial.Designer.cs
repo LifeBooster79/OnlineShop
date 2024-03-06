@@ -12,7 +12,7 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20240228220935_Initial")]
+    [Migration("20240306021426_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -256,7 +256,7 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<DateTime>("DateCreatedLatin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 2, 29, 1, 39, 35, 364, DateTimeKind.Local).AddTicks(4804));
+                        .HasDefaultValue(new DateTime(2024, 3, 6, 5, 44, 25, 493, DateTimeKind.Local).AddTicks(6781));
 
                     b.Property<string>("DateCreatedPersian")
                         .HasColumnType("nvarchar(max)");

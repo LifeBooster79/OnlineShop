@@ -12,19 +12,21 @@ using OnlineShop.Domain.Aggregates.UserManagementAggregates;
 using ResponseFramework;
 using OnlineShop.Domain.Aggregates.SaleAggregates;
 using System.Net.NetworkInformation;
+using OnlineShop.RepositoryDesignPattern.Framework.Abstract;
 
 namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
 {
-    public abstract class BaseRepository<TEntity,TDbContext> where TEntity:class where TDbContext : IdentityDbContext<OnlineShopUser, OnlineShopRole, string,
+    public abstract class BaseRepository<TEntity, TDbContext> : IRepository<TEntity> where TEntity : class where TDbContext : IdentityDbContext<OnlineShopUser, OnlineShopRole, string,
                                                                        IdentityUserClaim<string>, OnlineShopUserRole, IdentityUserLogin<string>,
                                                                        IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
         protected virtual TDbContext DbContext { get; set; }
         protected virtual DbSet<TEntity> DbSet { get; set; }
 
-        public BaseRepository(TDbContext dbContext) { 
-            
-            DbContext=dbContext;
+        public BaseRepository(TDbContext dbContext)
+        {
+
+            DbContext = dbContext;
             DbSet = dbContext.Set<TEntity>();
 
         }
@@ -98,7 +100,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
                 }
                 else
                 {
-                   DbSet.Update(entity);
+                    DbSet.Update(entity);
                     response.IsSuccessful = true;
                 }
 

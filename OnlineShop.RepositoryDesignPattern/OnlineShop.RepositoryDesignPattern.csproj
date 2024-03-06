@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Contracts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OnlineShop.Domain\OnlineShop.Domain.csproj" />
     <ProjectReference Include="..\OnlineShop.EFCore\OnlineShop.EFCore.csproj" />
     <ProjectReference Include="..\ResponseFramework\ResponseFramework.csproj" />
