@@ -1,45 +1,71 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Dtos.ProductDto;
+using OnlineShop.Domain.Aggregates.SaleAggregates;
 
 namespace OnlineShop.Office.WebApiEndpoint.Controllers
 {
-    public class ProductController : Controller
+    [ApiController]
+    public class ProductController : ControllerBase
     {
-       private readonly IProductService _productService;
-        
-        public ProductController(IProductService productService)
-        {
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService) {
+
             _productService = productService;
         }
+
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(ServiceCreateProductDto createdto)
+        [Route("api/[controller]/Create")]
+        public async Task<IActionResult> Create([FromBody] ServiceCreateProductDto createDto)
         {
-            if (createdto != null)
+            if (createDto == null)
             {
-                ServiceCreateProductDto serviceCreateProductDto = new ServiceCreateProductDto()
-                {
-                    Id = createdto.Id,
-                    Title = createdto.Title,
-                    UnitPrice = createdto.UnitPrice,
-                };
-
-                var response=await _productService.InsertAsync(serviceCreateProductDto);
-
-                return Json(response.IsSuccessful);
+                return BadRequest();
             }
             else
             {
-                return Json("Cant Added");
+                await _productService.InsertAsync(createDto);
+                return Ok();
             }
         }
 
-        public async Task<IActionResult> GetAllProducts()
+        [HttpGet]
+        [Route("api/[controller]/ReadAll")]
+        public async Task<IActionResult> SelectAll()
         {
-            ServiceSelectAllProductDto products = await _productService.SelectAllAsync();
+                var response=await _productService.SelectAllAsync();
+                return Ok(response);
+        }
 
+        [HttpPost]
+        [Route("api/[controller]/Update")]
+        public async Task<IActionResult> Upadte([FromBody] ServiceUpdateProductDto updateDto)
+        {
+            if (updateDto == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                await _productService.Update(updateDto);
+                return Ok();
+            }
+        }
 
-            return Json(products.ServiceSelectProductDtoList);
+        [HttpPost]
+        [Route("api/[controller]/Delete")]
+        public async Task<IActionResult> Delete([FromBody] ServiceDeleteProductDto deleteDto)
+        {
+            if (deleteDto == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                await _productService.Delete(deleteDto);   
+                return Ok();
+            }
         }
     }
 }

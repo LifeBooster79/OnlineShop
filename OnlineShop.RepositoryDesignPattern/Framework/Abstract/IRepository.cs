@@ -8,5 +8,6 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Abstract
         Task<IResponse<TEntity>> Insert(TEntity entity);
         Task<IResponse<IEnumerable<TEntity>>> SelectAll();
         Task<IResponse<TEntity>> Upadate(TEntity entity);
+        Task SaveChanges();
     }
 }

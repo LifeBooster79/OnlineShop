@@ -46,6 +46,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
                 else
                 {
                     await DbSet.AddAsync(entity);
+                    await SaveChanges();
                     response.IsSuccessful = true;
                 }
 
@@ -101,6 +102,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
                 else
                 {
                     DbSet.Update(entity);
+                    await SaveChanges();
                     response.IsSuccessful = true;
                 }
 
@@ -127,6 +129,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
                 else
                 {
                     DbSet.Remove(entity);
+                    await SaveChanges();
                     response.IsSuccessful = true;
                 }
 
@@ -136,6 +139,11 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
             {
                 throw;
             }
+        }
+
+        public async Task SaveChanges()
+        {
+            await DbContext.SaveChangesAsync();
         }
     }
 }

@@ -71,7 +71,7 @@ namespace OnlineShop.Application.Services.SaleService
         }
 
 
-        public async Task Delete(ServiceCreateProductDto deleteDto)
+        public async Task Delete(ServiceDeleteProductDto deleteDto)
         {
             var product = new Product()
             {
