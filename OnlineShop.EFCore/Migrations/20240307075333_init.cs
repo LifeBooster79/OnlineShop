@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShop.EFCore.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,7 +45,7 @@ namespace OnlineShop.EFCore.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DateSoftDeletedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateSoftDeletedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreatedLatin = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 6, 5, 44, 25, 493, DateTimeKind.Local).AddTicks(6781)),
+                    DateCreatedLatin = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 7, 11, 23, 32, 694, DateTimeKind.Local).AddTicks(3348)),
                     DateCreatedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsModified = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DateModifiedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -222,17 +222,18 @@ namespace OnlineShop.EFCore.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    productCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Product_ProductCategory_ProductCategoryId",
-                        column: x => x.ProductCategoryId,
+                        name: "FK_Product_ProductCategory_productCategoryId",
+                        column: x => x.productCategoryId,
                         principalSchema: "sale",
                         principalTable: "ProductCategory",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -340,10 +341,10 @@ namespace OnlineShop.EFCore.Migrations
                 column: "SellerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ProductCategoryId",
+                name: "IX_Product_productCategoryId",
                 schema: "sale",
                 table: "Product",
-                column: "ProductCategoryId");
+                column: "productCategoryId");
         }
 
         /// <inheritdoc />

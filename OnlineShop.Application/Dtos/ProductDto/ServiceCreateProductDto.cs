@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineShop.Domain.Aggregates.SaleAggregates;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,9 +11,10 @@ namespace OnlineShop.Application.Dtos.ProductDto
     public class ServiceCreateProductDto
     {
         public Guid Id { get; set; }
-        [Required(ErrorMessage = "Enter Title")]
-        public string Title { get; set; }
-        [Required(ErrorMessage = "Enter Unit Price")]
+        public required string Title { get; set; }
         public decimal UnitPrice { get; set; }
+        public string Code { get; set; }
+        //public ProductCategory productCategory { get; set; }
+        public Guid productCategoryId { get; set; }
     }
 }

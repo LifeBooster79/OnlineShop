@@ -12,8 +12,8 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20240306021426_Initial")]
-    partial class Initial
+    [Migration("20240307075333_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -175,9 +175,6 @@ namespace OnlineShop.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ProductCategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -185,9 +182,12 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid>("productCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductCategoryId");
+                    b.HasIndex("productCategoryId");
 
                     b.ToTable("Product", "sale");
                 });
@@ -256,7 +256,7 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<DateTime>("DateCreatedLatin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 6, 5, 44, 25, 493, DateTimeKind.Local).AddTicks(6781));
+                        .HasDefaultValue(new DateTime(2024, 3, 7, 11, 23, 32, 694, DateTimeKind.Local).AddTicks(3348));
 
                     b.Property<string>("DateCreatedPersian")
                         .HasColumnType("nvarchar(max)");
@@ -453,9 +453,13 @@ namespace OnlineShop.EFCore.Migrations
 
             modelBuilder.Entity("OnlineShop.Domain.Aggregates.SaleAggregates.Product", b =>
                 {
-                    b.HasOne("OnlineShop.Domain.Aggregates.SaleAggregates.ProductCategory", null)
+                    b.HasOne("OnlineShop.Domain.Aggregates.SaleAggregates.ProductCategory", "productCategory")
                         .WithMany("Products")
-                        .HasForeignKey("ProductCategoryId");
+                        .HasForeignKey("productCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("productCategory");
                 });
 
             modelBuilder.Entity("OnlineShop.Domain.Aggregates.UserManagementAggregates.OnlineShopUserRole", b =>

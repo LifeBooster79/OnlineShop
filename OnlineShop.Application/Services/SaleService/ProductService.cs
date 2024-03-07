@@ -24,12 +24,18 @@ namespace OnlineShop.Application.Services.SaleService
         }
         public async Task<IResponse<Product>> InsertAsync(ServiceCreateProductDto createDto)
         {
+            var  category=new ProductCategory()
+            {
+                Id= createDto.productCategoryId,
+            }
 
             var product = new Product()
             {
                 Id = createDto.Id,
                 Title = createDto.Title,
                 UnitPrice = createDto.UnitPrice,
+                Code = createDto.Code,
+                productCategoryId=createDto.productCategoryId
             };
 
             return await _productRepository.Insert(product);

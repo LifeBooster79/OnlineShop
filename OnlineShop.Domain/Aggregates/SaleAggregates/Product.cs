@@ -11,5 +11,7 @@ namespace OnlineShop.Domain.Aggregates.SaleAggregates
         public Guid Id { get; set; }
         public required string Title { get; set; }
         public decimal UnitPrice { get; set; }
+        public string Code {  get; set; }   
+        public ProductCategory productCategory { get; set; }
     }
 }
