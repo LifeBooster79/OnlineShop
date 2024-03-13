@@ -10,11 +10,8 @@ namespace OnlineShop.Domain.Aggregates.SaleAggregates
     public class OrderHeader
     {
         public Guid Id { get; set; }
-
         public DateTime OrderDate { get; set; }
-
         public  OnlineShopUser Seller { get; set; }
         public OnlineShopUser Buyer { get; set; }
-        //public List<OrderDetail>? OrderDetails { get; set; }
     }
 }

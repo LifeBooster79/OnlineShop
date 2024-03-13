@@ -16,7 +16,7 @@ using OnlineShop.RepositoryDesignPattern.Framework.Abstract;
 
 namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
 {
-    public abstract class BaseRepository<TEntity, TDbContext> : IRepository<TEntity> where TEntity : class where TDbContext : IdentityDbContext<OnlineShopUser, OnlineShopRole, string,
+    public abstract class BaseRepository<TEntity, TDbContext,TPrimaryKey> : IRepository<TEntity,TPrimaryKey> where TEntity : class where TDbContext : IdentityDbContext<OnlineShopUser, OnlineShopRole, string,
                                                                        IdentityUserClaim<string>, OnlineShopUserRole, IdentityUserLogin<string>,
                                                                        IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
@@ -65,7 +65,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
             var response = new Response<IEnumerable<TEntity>>();
             try
             {
-                var list = await DbSet.ToListAsync();
+                var list =await DbSet.AsNoTracking().ToListAsync();
 
                 if (list is null)
                 {
@@ -87,7 +87,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
             }
         }
 
-        //Update Item
+        //Update
         public virtual async Task<IResponse<TEntity>> Upadate(TEntity entity)
         {
             var response = new Response<TEntity>();
@@ -114,7 +114,28 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
             }
         }
 
-        //Delete Item
+        //DeleteByID
+        public virtual async Task<IResponse<TEntity>> UpadateById(TPrimaryKey Id)
+        {
+            try
+            {
+                var response = await FindById(Id);
+
+                if (response.IsSuccessful == true)
+                {
+                    DbSet.Update(response.Result);
+                    await SaveChanges();
+                }
+
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //Delete
         public virtual async Task<IResponse<TEntity>> Delete(TEntity entity)
         {
             var response = new Response<TEntity>();
@@ -141,6 +162,59 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
             }
         }
 
+        //DeleteByID
+        public virtual async Task<IResponse<TEntity>> DeleteById(TPrimaryKey Id)
+        {
+            try
+            {
+                var response = await FindById(Id);
+
+                if (response.IsSuccessful == true)
+                {
+                   DbSet.Remove(response.Result);
+                   await SaveChanges();
+                }
+
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        //FindById
+        public virtual async Task<IResponse<TEntity>> FindById(TPrimaryKey id)
+        {
+            var response = new Response<TEntity>();
+            try
+            {
+
+                var enitity = await DbSet.FindAsync(id);
+                if (enitity == null)
+                {
+                    response.Message = "Cant Find In Table";
+                    response.IsSuccessful = false;
+
+                }
+                else
+                {
+                    response.Result = enitity;
+                    response.IsSuccessful = true;
+                }
+
+                return response;
+            }
+            catch(Exception)
+            {
+
+                throw;
+
+            }
+           
+        }
+        
+        //SaveChanges
         public async Task SaveChanges()
         {
             await DbContext.SaveChangesAsync();

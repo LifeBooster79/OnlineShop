@@ -6,9 +6,11 @@ namespace OnlineShop.Application.Contracts
 {
     public interface IProductService
     {
-        Task Delete(ServiceDeleteProductDto deleteDto);
         Task<IResponse<Product>> InsertAsync(ServiceCreateProductDto createDto);
         Task<ServiceSelectAllProductDto> SelectAllAsync();
         Task Update(ServiceUpdateProductDto updateDto);
+        Task Delete(ServiceDeleteProductDto deleteDto);
+        Task DeleteById(ServiceDeleteByIdProductDto deleteByIdDto);
+
     }
 }

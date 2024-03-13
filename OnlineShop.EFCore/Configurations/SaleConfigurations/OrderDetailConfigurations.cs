@@ -18,8 +18,8 @@ namespace OnlineShop.EFCore.Configurations.SaleConfigurations
             builder.ToTable(nameof(OrderDetail), Sales.schemaName);
             builder.HasKey(p => new
             {
-                p.OrderHeaderId,
-                p.ProductId
+                p.orderHeaderId,
+                p.productId
             });
         }
     }

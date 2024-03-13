@@ -15,27 +15,24 @@ namespace OnlineShop.Application.Services.SaleService
 {
     public class ProductService : IProductService
     {
-        private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<Product,Guid> _productRepository;
 
-        public ProductService(IRepository<Product> productRepository)
+        public ProductService(IRepository<Product,Guid> productRepository)
         {
 
             _productRepository = productRepository;
         }
         public async Task<IResponse<Product>> InsertAsync(ServiceCreateProductDto createDto)
         {
-            var  category=new ProductCategory()
-            {
-                Id= createDto.productCategoryId,
-            }
+
 
             var product = new Product()
             {
-                Id = createDto.Id,
                 Title = createDto.Title,
                 UnitPrice = createDto.UnitPrice,
                 Code = createDto.Code,
                 productCategoryId=createDto.productCategoryId
+
             };
 
             return await _productRepository.Insert(product);
@@ -52,12 +49,8 @@ namespace OnlineShop.Application.Services.SaleService
 
             foreach (var product in products.Result)
             {
-                serviceSelectAllProductDto.ServiceSelectProductDtoList.Add(new ServiceSelectProductDto()
-                {
-                    Id = product.Id,
-                    Title = product.Title,
-                    UnitPrice = product.UnitPrice,
-                });
+                ServiceSelectProductDto serviceSelectProductDto = new ServiceSelectProductDto() { Code = product.Code ,Title=product.Title,UnitPrice=product.UnitPrice};
+                serviceSelectAllProductDto.serviceSelectProductDtoList.Add(serviceSelectProductDto);
             }
 
             return serviceSelectAllProductDto;
@@ -71,6 +64,9 @@ namespace OnlineShop.Application.Services.SaleService
                 Id = updateDto.Id,
                 Title = updateDto.Title,
                 UnitPrice = updateDto.UnitPrice,
+                Code = updateDto.Code,
+                productCategoryId = updateDto.productCategoryId,
+
             };
 
             await _productRepository.Upadate(product);
@@ -84,9 +80,18 @@ namespace OnlineShop.Application.Services.SaleService
                 Id = deleteDto.Id,
                 Title = deleteDto.Title,
                 UnitPrice = deleteDto.UnitPrice,
+                Code = deleteDto.Code,
+                productCategoryId=deleteDto.productCategoryId,
+                
             };
 
             await _productRepository.Delete(product);
+        }
+
+        public async Task DeleteById(ServiceDeleteByIdProductDto deleteByIdDto)
+        {
+
+            await _productRepository.DeleteById(deleteByIdDto.Id);
         }
     }
 }

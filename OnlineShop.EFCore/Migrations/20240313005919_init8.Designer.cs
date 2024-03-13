@@ -12,8 +12,8 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20240307083236_init2")]
-    partial class init2
+    [Migration("20240313005919_init8")]
+    partial class init8
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,16 +118,10 @@ namespace OnlineShop.EFCore.Migrations
 
             modelBuilder.Entity("OnlineShop.Domain.Aggregates.SaleAggregates.OrderDetail", b =>
                 {
-                    b.Property<string>("OrderHeaderId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("OrderHeaderId1")
+                    b.Property<Guid>("orderHeaderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ProductId1")
+                    b.Property<Guid>("productId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
@@ -136,11 +130,9 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("OrderHeaderId", "ProductId");
+                    b.HasKey("orderHeaderId", "productId");
 
-                    b.HasIndex("OrderHeaderId1");
-
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("productId");
 
                     b.ToTable("OrderDetail", "sale");
                 });
@@ -260,7 +252,7 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<DateTime>("DateCreatedLatin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 7, 12, 2, 36, 390, DateTimeKind.Local).AddTicks(5810));
+                        .HasDefaultValue(new DateTime(2024, 3, 13, 4, 29, 19, 548, DateTimeKind.Local).AddTicks(3808));
 
                     b.Property<string>("DateCreatedPersian")
                         .HasColumnType("nvarchar(max)");
@@ -429,11 +421,15 @@ namespace OnlineShop.EFCore.Migrations
                 {
                     b.HasOne("OnlineShop.Domain.Aggregates.SaleAggregates.OrderHeader", "OrderHeader")
                         .WithMany()
-                        .HasForeignKey("OrderHeaderId1");
+                        .HasForeignKey("orderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("OnlineShop.Domain.Aggregates.SaleAggregates.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId1");
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OrderHeader");
 

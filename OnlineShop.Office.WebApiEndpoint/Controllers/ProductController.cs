@@ -17,15 +17,15 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
 
         [HttpPost]
         [Route("api/[controller]/Create")]
-        public async Task<IActionResult> Create([FromBody] ServiceCreateProductDto createDto)
+        public async Task<IActionResult> Create([FromBody] ServiceCreateProductDto model)
         {
-            if (createDto == null)
+            if (model == null)
             {
                 return BadRequest();
             }
             else
             {
-                await _productService.InsertAsync(createDto);
+                await _productService.InsertAsync(model);
                 return Ok();
             }
         }
@@ -35,7 +35,7 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
         public async Task<IActionResult> SelectAll()
         {
                 var response=await _productService.SelectAllAsync();
-                return Ok(response);
+                return Ok(response.serviceSelectProductDtoList);
         }
 
         [HttpPost]
@@ -53,17 +53,32 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("api/[controller]/Delete")]
-        public async Task<IActionResult> Delete([FromBody] ServiceDeleteProductDto deleteDto)
+        public async Task<IActionResult> Delete([FromBody] ServiceDeleteProductDto model)
         {
-            if (deleteDto == null)
+            if (model == null)
             {
                 return BadRequest();
             }
             else
             {
-                await _productService.Delete(deleteDto);   
+                await _productService.Delete(model);   
+                return Ok();
+            }
+        }
+
+        [HttpDelete]
+        [Route("api/[controller]/DeleteById")]
+        public async Task<IActionResult> DeleteById([FromBody] ServiceDeleteByIdProductDto model)
+        {
+            if (model == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                await _productService.DeleteById(model);
                 return Ok();
             }
         }

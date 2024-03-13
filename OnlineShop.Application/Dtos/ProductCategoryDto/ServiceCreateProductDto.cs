@@ -6,13 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Application.Dtos.ProductDto
+namespace OnlineShop.Application.Dtos.ProductCategoryDto
 {
-    public class ServiceCreateProductDto
+    public class ServiceCreateProductCategoryDto
     {
         public required string Title { get; set; }
-        public required decimal UnitPrice { get; set; }
-        public required string Code { get; set; }
-        public required Guid productCategoryId { get; set; }
     }
 }

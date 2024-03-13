@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShop.EFCore.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,7 +45,7 @@ namespace OnlineShop.EFCore.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DateSoftDeletedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateSoftDeletedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreatedLatin = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 7, 11, 23, 32, 694, DateTimeKind.Local).AddTicks(3348)),
+                    DateCreatedLatin = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 13, 4, 0, 58, 313, DateTimeKind.Local).AddTicks(4182)),
                     DateCreatedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsModified = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DateModifiedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -76,7 +76,7 @@ namespace OnlineShop.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -195,7 +195,7 @@ namespace OnlineShop.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SellerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -220,8 +220,9 @@ namespace OnlineShop.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     productCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -241,28 +242,28 @@ namespace OnlineShop.EFCore.Migrations
                 schema: "sale",
                 columns: table => new
                 {
-                    OrderHeaderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    OrderHeaderId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ProductId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    orderHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    productId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetail", x => new { x.OrderHeaderId, x.ProductId });
+                    table.PrimaryKey("PK_OrderDetail", x => new { x.orderHeaderId, x.productId });
                     table.ForeignKey(
-                        name: "FK_OrderDetail_OrderHeader_OrderHeaderId1",
-                        column: x => x.OrderHeaderId1,
+                        name: "FK_OrderDetail_OrderHeader_orderHeaderId",
+                        column: x => x.orderHeaderId,
                         principalSchema: "sale",
                         principalTable: "OrderHeader",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Product_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_OrderDetail_Product_productId",
+                        column: x => x.productId,
                         principalSchema: "sale",
                         principalTable: "Product",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -317,16 +318,10 @@ namespace OnlineShop.EFCore.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_OrderHeaderId1",
+                name: "IX_OrderDetail_productId",
                 schema: "sale",
                 table: "OrderDetail",
-                column: "OrderHeaderId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_ProductId1",
-                schema: "sale",
-                table: "OrderDetail",
-                column: "ProductId1");
+                column: "productId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderHeader_BuyerId",

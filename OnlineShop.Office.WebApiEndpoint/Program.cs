@@ -20,7 +20,7 @@ var connectionstring =builder.Configuration.GetConnectionString("OnlineShop");
 builder.Services.AddDbContext<OnlineShopDbContext>(option=>option.UseSqlServer(connectionstring));
 
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
+builder.Services.AddScoped<IRepository<Product,Guid>, ProductRepository>();
 
 
 

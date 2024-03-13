@@ -12,8 +12,8 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20240307075333_init")]
-    partial class init
+    [Migration("20240313005656_init7")]
+    partial class init7
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -118,16 +118,10 @@ namespace OnlineShop.EFCore.Migrations
 
             modelBuilder.Entity("OnlineShop.Domain.Aggregates.SaleAggregates.OrderDetail", b =>
                 {
-                    b.Property<string>("OrderHeaderId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid?>("OrderHeaderId1")
+                    b.Property<Guid>("orderHeaderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ProductId1")
+                    b.Property<Guid>("productId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Quantity")
@@ -136,11 +130,9 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("OrderHeaderId", "ProductId");
+                    b.HasKey("orderHeaderId", "productId");
 
-                    b.HasIndex("OrderHeaderId1");
-
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("productId");
 
                     b.ToTable("OrderDetail", "sale");
                 });
@@ -175,6 +167,10 @@ namespace OnlineShop.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -182,7 +178,7 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("productCategoryId")
+                    b.Property<Guid?>("productCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -256,7 +252,7 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<DateTime>("DateCreatedLatin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 3, 7, 11, 23, 32, 694, DateTimeKind.Local).AddTicks(3348));
+                        .HasDefaultValue(new DateTime(2024, 3, 13, 4, 26, 56, 263, DateTimeKind.Local).AddTicks(3358));
 
                     b.Property<string>("DateCreatedPersian")
                         .HasColumnType("nvarchar(max)");
@@ -425,11 +421,15 @@ namespace OnlineShop.EFCore.Migrations
                 {
                     b.HasOne("OnlineShop.Domain.Aggregates.SaleAggregates.OrderHeader", "OrderHeader")
                         .WithMany()
-                        .HasForeignKey("OrderHeaderId1");
+                        .HasForeignKey("orderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("OnlineShop.Domain.Aggregates.SaleAggregates.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId1");
+                        .HasForeignKey("productId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OrderHeader");
 
@@ -455,9 +455,7 @@ namespace OnlineShop.EFCore.Migrations
                 {
                     b.HasOne("OnlineShop.Domain.Aggregates.SaleAggregates.ProductCategory", "productCategory")
                         .WithMany("Products")
-                        .HasForeignKey("productCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("productCategoryId");
 
                     b.Navigation("productCategory");
                 });
