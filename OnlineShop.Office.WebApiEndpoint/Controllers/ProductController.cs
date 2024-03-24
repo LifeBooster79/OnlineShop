@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Dtos.ProductDto;
@@ -16,7 +17,7 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
         }
 
         [HttpPost]
-        [Route("api/[controller]/Create")]
+        [Route("api/[controller]")]
         public async Task<IActionResult> Create([FromBody] ServiceCreateProductDto model)
         {
             if (model == null)
@@ -31,15 +32,27 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/ReadAll")]
+        [Route("api/[controller]")]
         public async Task<IActionResult> SelectAll()
         {
                 var response=await _productService.SelectAllAsync();
                 return Ok(response.serviceSelectProductDtoList);
         }
 
-        [HttpPost]
-        [Route("api/[controller]/Update")]
+        [HttpGet]
+        [Route("api/[controller]/filter")]
+        public async Task<IActionResult> Search(string searchString,int pageIndex,int pageSize)
+        {
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                var response=await _productService.Search(searchString,pageSize,pageIndex);
+                return Ok(response.products);
+
+            }else { return BadRequest(); }
+        }
+
+        [HttpPut]
+        [Route("api/[controller]")]
         public async Task<IActionResult> Upadte([FromBody] ServiceUpdateProductDto updateDto)
         {
             if (updateDto == null)

@@ -11,6 +11,7 @@ namespace OnlineShop.Application.Contracts
         Task Update(ServiceUpdateProductDto updateDto);
         Task Delete(ServiceDeleteProductDto deleteDto);
         Task DeleteById(ServiceDeleteByIdProductDto deleteByIdDto);
+        Task<ServiceSearchProductDto> Search(string searchString, int pageSize, int pageIndex);
 
     }
 }

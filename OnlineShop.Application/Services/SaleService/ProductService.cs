@@ -15,9 +15,9 @@ namespace OnlineShop.Application.Services.SaleService
 {
     public class ProductService : IProductService
     {
-        private readonly IRepository<Product,Guid> _productRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IRepository<Product,Guid> productRepository)
+        public ProductService(IProductRepository productRepository)
         {
 
             _productRepository = productRepository;
@@ -92,6 +92,16 @@ namespace OnlineShop.Application.Services.SaleService
         {
 
             await _productRepository.DeleteById(deleteByIdDto.Id);
+        }
+
+        public async Task<ServiceSearchProductDto> Search(string searchString,int pageSize,int pageIndex)
+        {
+            var products=await _productRepository.Search(searchString,pageSize,pageIndex);
+
+            ServiceSearchProductDto serviceSearchProductDto=new ServiceSearchProductDto() { products=products.Result};
+
+            return serviceSearchProductDto;
+
         }
     }
 }
