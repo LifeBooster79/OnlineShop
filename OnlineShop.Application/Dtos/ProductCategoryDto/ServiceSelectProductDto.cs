@@ -9,7 +9,6 @@ namespace OnlineShop.Application.Dtos.ProductCategoryDto
 {
     public class ServiceSelectProductCategoryDto
     {
-        public required string Title { get; set; }
+        public required IEnumerable<ProductCategory> productCategory{ get; set; }
     }
-    
 }

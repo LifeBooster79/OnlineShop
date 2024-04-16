@@ -12,32 +12,32 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
 {
-    public class ProductRepository:BaseRepository<Product,OnlineShopDbContext,Guid>,IProductRepository
+    public class ProductCategoryRepository: BaseRepository<ProductCategory, OnlineShopDbContext, Guid>, IProductCategoryRepository
     {
-        public ProductRepository(OnlineShopDbContext context) : base(context) { 
-        
-            
-              
+        public ProductCategoryRepository(OnlineShopDbContext context) : base(context)
+        {
+
+
         }
 
-        public virtual async Task<IResponse<IEnumerable<Product>>> Search(string searchString,int pageSize,int pageIndex)
+        public virtual async Task<IResponse<IEnumerable<ProductCategory>>> Search(string searchString, int pageSize, int pageIndex)
         {
-            var response = new Response<IEnumerable<Product>>();
+            var response = new Response<IEnumerable<ProductCategory>>();
 
             try
             {
-                var products = DbSet.Select(p=>p);
+                var productCategory = DbSet.Select(p => p);
 
                 if (!String.IsNullOrEmpty(searchString))
                 {
 
-                    products = DbSet.Where(p => p.Title.Contains(searchString));
+                    productCategory = DbSet.Where(p => p.Title.Contains(searchString));
                 }
 
 
-                products =products.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                productCategory = productCategory.Skip((pageIndex - 1) * pageSize).Take(pageSize);
 
-                response.Result = await products.ToListAsync();
+                response.Result = await productCategory.ToListAsync();
                 response.IsSuccessful = true;
                 return response;
             }

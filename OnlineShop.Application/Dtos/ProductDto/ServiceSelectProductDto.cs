@@ -9,9 +9,7 @@ namespace OnlineShop.Application.Dtos.ProductDto
 {
     public class ServiceSelectProductDto
     {
-        public required string Title { get; set; }
-        public required decimal UnitPrice { get; set; }
-        public required string Code { get; set; }
+        public required IEnumerable<Product> products { get; set; }
     }
-    
+
 }

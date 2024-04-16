@@ -7,7 +7,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Abstract
     {
         Task<IResponse<TEntity>> Insert(TEntity entity);
         Task<IResponse<IEnumerable<TEntity>>> SelectAll();
-        Task<IResponse<TEntity>> Upadate(TEntity entity);
+        Task<IResponse<TEntity>> Upadate(TEntity updatedEntity, TPrimaryKey Id);
         Task<IResponse<TEntity>> Delete(TEntity entity);
         Task<IResponse<TEntity>> DeleteById(TPrimaryKey Id);
         Task<IResponse<TEntity>> FindById(TPrimaryKey id);

@@ -22,6 +22,8 @@ builder.Services.AddDbContext<OnlineShopDbContext>(option=>option.UseSqlServer(c
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 
 
 

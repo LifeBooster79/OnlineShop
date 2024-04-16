@@ -39,25 +39,16 @@ namespace OnlineShop.Application.Services.SaleService
 
 
         }
-
-        public async Task<ServiceSelectAllProductDto> SelectAllAsync()
+        public async Task<ServiceSelectProductDto> SelectAsync(string searchString, int pageSize, int pageIndex)
         {
+            var products = await _productRepository.Search(searchString, pageSize, pageIndex);
 
-            var products = await _productRepository.SelectAll();
+            ServiceSelectProductDto serviceSearchProductDto = new () { products = products.Result };
 
-            ServiceSelectAllProductDto serviceSelectAllProductDto = new ServiceSelectAllProductDto();
-
-            foreach (var product in products.Result)
-            {
-                ServiceSelectProductDto serviceSelectProductDto = new ServiceSelectProductDto() { Code = product.Code ,Title=product.Title,UnitPrice=product.UnitPrice};
-                serviceSelectAllProductDto.serviceSelectProductDtoList.Add(serviceSelectProductDto);
-            }
-
-            return serviceSelectAllProductDto;
+            return serviceSearchProductDto;
 
         }
-
-        public async Task Update(ServiceUpdateProductDto updateDto)
+        public async Task UpdateAsync(ServiceUpdateProductDto updateDto)
         {
             var product = new Product()
             {
@@ -69,39 +60,14 @@ namespace OnlineShop.Application.Services.SaleService
 
             };
 
-            await _productRepository.Upadate(product);
+            await _productRepository.Upadate(product,updateDto.Id);
         }
-
-
-        public async Task Delete(ServiceDeleteProductDto deleteDto)
-        {
-            var product = new Product()
-            {
-                Id = deleteDto.Id,
-                Title = deleteDto.Title,
-                UnitPrice = deleteDto.UnitPrice,
-                Code = deleteDto.Code,
-                productCategoryId=deleteDto.productCategoryId,
-                
-            };
-
-            await _productRepository.Delete(product);
-        }
-
-        public async Task DeleteById(ServiceDeleteByIdProductDto deleteByIdDto)
+        public async Task DeleteAsync(ServiceDeleteByIdProductDto deleteByIdDto)
         {
 
             await _productRepository.DeleteById(deleteByIdDto.Id);
         }
 
-        public async Task<ServiceSearchProductDto> Search(string searchString,int pageSize,int pageIndex)
-        {
-            var products=await _productRepository.Search(searchString,pageSize,pageIndex);
 
-            ServiceSearchProductDto serviceSearchProductDto=new ServiceSearchProductDto() { products=products.Result};
-
-            return serviceSearchProductDto;
-
-        }
     }
 }

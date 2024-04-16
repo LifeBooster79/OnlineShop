@@ -9,7 +9,7 @@ namespace OnlineShop.Application.Dtos.ProductCategoryDto
 {
     public class ServiceDeleteProductCategoryDto
     {
-        public required string Title { get; set; }
+        public required Guid Id { get; set; }
 
     }
 }

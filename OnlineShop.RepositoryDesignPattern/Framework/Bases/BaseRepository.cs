@@ -13,6 +13,8 @@ using ResponseFramework;
 using OnlineShop.Domain.Aggregates.SaleAggregates;
 using System.Net.NetworkInformation;
 using OnlineShop.RepositoryDesignPattern.Framework.Abstract;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Data.SqlTypes;
 
 namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
 {
@@ -88,19 +90,52 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
         }
 
         //Update
-        public virtual async Task<IResponse<TEntity>> Upadate(TEntity entity)
+        public virtual async Task<IResponse<TEntity>> Upadate(TEntity updatedEntity,TPrimaryKey Id)
         {
             var response = new Response<TEntity>();
             try
             {
+                var entity = await DbSet.FindAsync(Id);
 
                 if (entity is null)
                 {
-                    response.Message = $"Cant Update In Product Table";
+                    response.Message = "Cant Find In Table";
                     response.IsSuccessful = false;
                 }
                 else
                 {
+                    foreach (var property in typeof(TEntity).GetProperties())
+                    {
+                        // Get the type of the property
+                        var propertyType = property.PropertyType;
+
+                        var updatedValue = property.GetValue(updatedEntity);
+
+                        //Check Null Property
+                        if (propertyType.Name=="String" && updatedValue!=null)
+                        {
+                            property.SetValue(entity, updatedValue);
+                        }
+                        else
+                        {
+                            //Check Decimal Property
+                            if (propertyType.Name == "Decimal")
+                            {
+                                if (Convert.ToInt32(updatedValue) != 0)
+                                {
+                                    property.SetValue(entity, updatedValue);
+                                }
+                            }
+                            //Check Guid Propery
+                            if (propertyType.Name == "Guid")
+                            {
+                                if ((Guid)updatedValue != Guid.Empty)
+                                {
+                                    property.SetValue(entity, updatedValue);
+                                }
+                            }
+                        }
+                    }
                     DbSet.Update(entity);
                     await SaveChanges();
                     response.IsSuccessful = true;

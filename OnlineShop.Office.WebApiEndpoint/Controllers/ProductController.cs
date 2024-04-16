@@ -33,22 +33,12 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
 
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<IActionResult> SelectAll()
+        public async Task<IActionResult> Read(string? searchString,int pageIndex,int pageSize)
         {
-                var response=await _productService.SelectAllAsync();
-                return Ok(response.serviceSelectProductDtoList);
-        }
 
-        [HttpGet]
-        [Route("api/[controller]/filter")]
-        public async Task<IActionResult> Search(string searchString,int pageIndex,int pageSize)
-        {
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                var response=await _productService.Search(searchString,pageSize,pageIndex);
-                return Ok(response.products);
+            var response=await _productService.SelectAsync(searchString,pageSize,pageIndex);
+            return Ok(response.products);
 
-            }else { return BadRequest(); }
         }
 
         [HttpPut]
@@ -61,14 +51,14 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
             else
             {
-                await _productService.Update(updateDto);
+                await _productService.UpdateAsync(updateDto);
                 return Ok();
             }
         }
 
         [HttpDelete]
-        [Route("api/[controller]/Delete")]
-        public async Task<IActionResult> Delete([FromBody] ServiceDeleteProductDto model)
+        [Route("api/[controller]")]
+        public async Task<IActionResult> Delete([FromBody] ServiceDeleteByIdProductDto model)
         {
             if (model == null)
             {
@@ -76,22 +66,7 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
             else
             {
-                await _productService.Delete(model);   
-                return Ok();
-            }
-        }
-
-        [HttpDelete]
-        [Route("api/[controller]/DeleteById")]
-        public async Task<IActionResult> DeleteById([FromBody] ServiceDeleteByIdProductDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                await _productService.DeleteById(model);
+                await _productService.DeleteAsync(model);
                 return Ok();
             }
         }

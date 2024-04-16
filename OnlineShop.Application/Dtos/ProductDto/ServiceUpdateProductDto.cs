@@ -10,9 +10,9 @@ namespace OnlineShop.Application.Dtos.ProductDto
     public class ServiceUpdateProductDto
     {
         public required Guid Id { get; set; }
-        public required string Title { get; set; }
-        public required decimal UnitPrice { get; set; }
-        public required string Code { get; set; }
-        public required Guid productCategoryId { get; set; }
+        public  string? Title { get; set; }
+        public  decimal UnitPrice { get; set; }
+        public  string? Code { get; set; }
+        public  Guid productCategoryId { get; set; }
     }
 }
