@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Services.SaleService;
+using OnlineShop.Application.Services.UserManagementService;
 using OnlineShop.Domain.Aggregates.SaleAggregates;
+using OnlineShop.Domain.Aggregates.UserManagementAggregates;
 using OnlineShop.EFCore;
 using OnlineShop.RepositoryDesignPattern.Framework.Abstract;
 using OnlineShop.RepositoryDesignPattern.Services.Contracts;
@@ -26,8 +29,21 @@ builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 
 
+//builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<IUserRepository,UserRepository >();
 
+builder.Services.AddIdentity<OnlineShopUser,OnlineShopRole>()
+    .AddEntityFrameworkStores<OnlineShopDbContext>()
+    .AddDefaultTokenProviders();
 
+// Configure other Identity options as needed
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    // Configure password settings, sign-in settings, etc.
+//    options.Password.RequiredLength = 6;
+//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+//    options.SignIn.RequireConfirmedEmail = true; // Example setting
+//});
 
 var app = builder.Build();
 

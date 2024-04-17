@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShop.EFCore.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class firstMigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,23 +33,6 @@ namespace OnlineShop.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CellPhone = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CellPhoneConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    NationalId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NationalIdConfirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DateSoftDeletedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateSoftDeletedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCreatedLatin = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2024, 3, 13, 4, 0, 58, 313, DateTimeKind.Local).AddTicks(4182)),
-                    DateCreatedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsModified = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DateModifiedLatin = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateModifiedPersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -76,7 +59,7 @@ namespace OnlineShop.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -195,7 +178,7 @@ namespace OnlineShop.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SellerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -220,9 +203,9 @@ namespace OnlineShop.EFCore.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     productCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -244,8 +227,8 @@ namespace OnlineShop.EFCore.Migrations
                 {
                     orderHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     productId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                    UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -297,18 +280,6 @@ namespace OnlineShop.EFCore.Migrations
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_CellPhone",
-                table: "AspNetUsers",
-                column: "CellPhone",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_NationalId",
-                table: "AspNetUsers",
-                column: "NationalId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
