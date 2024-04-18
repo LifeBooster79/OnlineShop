@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
 {
@@ -24,40 +25,51 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
 
         public virtual async Task<IResponse<String>> Insert(OrderHeader entity, List<OrderDetail> details)
         {
-            try
+            var response = new Response<String>();
+
+            using (TransactionScope scope = new TransactionScope())
             {
-                var response = new Response<String>();  
-
-                if (entity == null || details == null)
+                try
                 {
-                    response.Message = "Cant Add In Table";
-                    response.IsSuccessful = false;
 
-                }
-                else
-                {
-                    var result=await _context.OrderHeader.AddAsync(entity);
 
-                    foreach (OrderDetail detail in details)
+                    if (entity == null || details == null)
                     {
-                        await _context.OrderDetail.AddAsync(detail);
+                        response.Message = "Cant Add In Table";
+                        response.IsSuccessful = false;
 
                     }
-                    response.Message = "The Order Added";
-                    response.Result = null;
-                    response.IsSuccessful = true;
+                    else
+                    {
 
-                    await _context.SaveChangesAsync();
+                        var result = await _context.OrderHeader.AddAsync(entity);
+
+                        foreach (OrderDetail detail in details)
+                        {
+                            await _context.OrderDetail.AddAsync(detail);
+
+                        }
+                        response.Message = "The Order Added";
+                        response.Result = null;
+                        response.IsSuccessful = true;
+
+                        await _context.SaveChangesAsync();
+                        scope.Complete()
+;
+                    }
+
+                    return response;
+
                 }
-                
-                return response;
+                catch (Exception ex)
+                {
+                    
+                    scope.Dispose();
+                    throw;
+                }
 
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
+   
         }
         public virtual async Task<IResponse<IEnumerable<OrderHeader>>> SelectOrder(string searchId, int pageSize, int pageIndex)
         {

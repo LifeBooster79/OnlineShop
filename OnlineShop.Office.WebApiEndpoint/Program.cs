@@ -30,6 +30,7 @@ builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 
 
+
 //builder.Services.AddScoped<IUserService, UserService>();
 //builder.Services.AddScoped<IUserRepository,UserRepository >();
 
