@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
 {
@@ -191,32 +192,38 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
         }
         public virtual async Task<IResponse<String>> Delete(Guid orderHeaderId)
         {
-            try
+            using (TransactionScope scope=new TransactionScope())
             {
-                var response = new Response<String>();
+                try
+                {
+                    var response = new Response<String>();
 
-                var orderHeader = await _context.OrderHeader.FindAsync(orderHeaderId);
+                    var orderHeader = await _context.OrderHeader.FindAsync(orderHeaderId);
 
-                var orderDetails = _context.OrderDetail.Where(o => o.orderHeaderId == orderHeaderId);
+                    var orderDetails = _context.OrderDetail.Where(o => o.orderHeaderId == orderHeaderId);
 
-                // Remove all related OrderDetails
-                _context.OrderDetail.RemoveRange(orderDetails);
+                    // Remove all related OrderDetails
+                    _context.OrderDetail.RemoveRange(orderDetails);
 
-                // Remove the OrderHeader
-                _context.OrderHeader.Remove(orderHeader);
+                    // Remove the OrderHeader
+                    _context.OrderHeader.Remove(orderHeader);
 
-                response.Message = "The Order Deleted";
-                response.Result = null;
-                response.IsSuccessful = true;
+                    response.Message = "The Order Deleted";
+                    response.Result = null;
+                    response.IsSuccessful = true;
 
-                await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
 
-                return response;
+                    scope.Complete();
 
-            }catch (Exception) {
+                    return response;
 
-
-                throw;
+                }
+                catch (Exception)
+                {
+                    scope.Dispose();
+                    throw;
+                }
             }
 
         }
