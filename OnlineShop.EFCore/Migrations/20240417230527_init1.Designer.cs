@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.EFCore;
 
@@ -11,9 +12,11 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    partial class OnlineShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417230527_init1")]
+    partial class init1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,26 +143,26 @@ namespace OnlineShop.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BuyerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BuyerId1")
+                    b.Property<string>("BuyerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("SellerId")
+                    b.Property<string>("SellerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("buyerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SellerId1")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("sellerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId1");
+                    b.HasIndex("BuyerId");
 
-                    b.HasIndex("SellerId1");
+                    b.HasIndex("SellerId");
 
                     b.ToTable("OrderHeader", "sale");
                 });
@@ -372,11 +375,11 @@ namespace OnlineShop.EFCore.Migrations
                 {
                     b.HasOne("OnlineShop.Domain.Aggregates.UserManagementAggregates.OnlineShopUser", "Buyer")
                         .WithMany()
-                        .HasForeignKey("BuyerId1");
+                        .HasForeignKey("BuyerId");
 
                     b.HasOne("OnlineShop.Domain.Aggregates.UserManagementAggregates.OnlineShopUser", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId1");
+                        .HasForeignKey("SellerId");
 
                     b.Navigation("Buyer");
 

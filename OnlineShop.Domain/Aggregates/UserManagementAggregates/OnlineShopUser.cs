@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using OnlineShop.Domain.Aggregates.SaleAggregates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace OnlineShop.Domain.Aggregates.UserManagementAggregates
 {
     public class OnlineShopUser:IdentityUser
     {
-         //Fields
+        //Fields
 
     }
 }

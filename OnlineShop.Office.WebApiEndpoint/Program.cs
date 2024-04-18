@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Services.SaleService;
@@ -32,9 +33,14 @@ builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository
 //builder.Services.AddScoped<IUserService, UserService>();
 //builder.Services.AddScoped<IUserRepository,UserRepository >();
 
+
+
 builder.Services.AddIdentity<OnlineShopUser,OnlineShopRole>()
     .AddEntityFrameworkStores<OnlineShopDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 // Configure other Identity options as needed
 //builder.Services.Configure<IdentityOptions>(options =>
