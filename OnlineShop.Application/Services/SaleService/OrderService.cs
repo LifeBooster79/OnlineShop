@@ -42,7 +42,7 @@ namespace OnlineShop.Application.Services.SaleService
 
             List<OrderDetail> orderDetails = new List<OrderDetail>();
 
-            foreach (OrderDetailDto orderDetailDto in createDto.OrderDetails)
+            foreach (ServiceOrderDetailsDto orderDetailDto in createDto.OrderDetails)
             {
                 orderDetails.Add(new OrderDetail()
                 {
