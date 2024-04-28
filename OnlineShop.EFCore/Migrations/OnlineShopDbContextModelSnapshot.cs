@@ -141,15 +141,28 @@ namespace OnlineShop.EFCore.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BuyerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifyDatePersian")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SellerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SoftDeleteDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isModified")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -170,12 +183,27 @@ namespace OnlineShop.EFCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreatedDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifyDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SoftDeleteDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("isModified")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("productCategoryId")
                         .HasColumnType("uniqueidentifier");
@@ -368,15 +396,11 @@ namespace OnlineShop.EFCore.Migrations
                 {
                     b.HasOne("OnlineShop.Domain.Aggregates.UserManagementAggregates.OnlineShopUser", "Buyer")
                         .WithMany()
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BuyerId");
 
                     b.HasOne("OnlineShop.Domain.Aggregates.UserManagementAggregates.OnlineShopUser", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SellerId");
 
                     b.Navigation("Buyer");
 

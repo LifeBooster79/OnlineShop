@@ -12,8 +12,8 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20240416220008_firstMigrate")]
-    partial class firstMigrate
+    [Migration("20240428063431_init_0")]
+    partial class init_0
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,12 +171,27 @@ namespace OnlineShop.EFCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreatedDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifyDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SoftDeleteDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("isModified")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("productCategoryId")
                         .HasColumnType("uniqueidentifier");

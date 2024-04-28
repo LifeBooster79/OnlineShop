@@ -19,6 +19,8 @@ namespace OnlineShop.EFCore.Configurations.SaleConfigurations
             {
                 p.Id
             });
+
+            builder.HasQueryFilter(p=>p.IsSoftDeleted!=true);
         }
     }
 }

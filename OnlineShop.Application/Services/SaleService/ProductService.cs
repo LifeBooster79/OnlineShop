@@ -7,9 +7,12 @@ using OnlineShop.RepositoryDesignPattern.Services.Repositories;
 using ResponseFramework;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace OnlineShop.Application.Services.SaleService
 {
@@ -50,6 +53,19 @@ namespace OnlineShop.Application.Services.SaleService
         }
         public async Task UpdateAsync(ServiceUpdateProductDto updateDto)
         {
+            //Convert to PersianTime
+            //-----------------------------------------------------
+            PersianCalendar persianCalendar = new PersianCalendar();
+            DateTime dateTime = DateTime.Now;
+
+            int year = persianCalendar.GetYear(dateTime);
+            int month = persianCalendar.GetMonth(dateTime);
+            int day = persianCalendar.GetDayOfMonth(dateTime);
+
+            string persianDateTimeString = $"{year}/{month}/{day}";
+            //-----------------------------------------------------
+
+
             var product = new Product()
             {
                 Id = updateDto.Id,
@@ -57,6 +73,9 @@ namespace OnlineShop.Application.Services.SaleService
                 UnitPrice = updateDto.UnitPrice,
                 Code = updateDto.Code,
                 productCategoryId = updateDto.productCategoryId,
+                isModified=true,
+                ModifyDatePersian= persianDateTimeString
+
 
             };
 
@@ -64,8 +83,26 @@ namespace OnlineShop.Application.Services.SaleService
         }
         public async Task DeleteAsync(ServiceDeleteByIdProductDto deleteByIdDto)
         {
+            //Convert to PersianTime
+            //-----------------------------------------------------
+            PersianCalendar persianCalendar = new PersianCalendar();
+            DateTime dateTime = DateTime.Now;
 
-            await _productRepository.DeleteById(deleteByIdDto.Id);
+            int year = persianCalendar.GetYear(dateTime);
+            int month = persianCalendar.GetMonth(dateTime);
+            int day = persianCalendar.GetDayOfMonth(dateTime);
+
+            string persianDateTimeString = $"{year}/{month}/{day}";
+            //-----------------------------------------------------
+
+            var product = new Product()
+            {
+                
+                IsSoftDeleted = true,
+                SoftDeleteDatePersian= persianDateTimeString
+            };
+
+            await _productRepository.Upadate(product, deleteByIdDto.Id);
         }
 
 

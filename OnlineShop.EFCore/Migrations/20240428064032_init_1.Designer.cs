@@ -12,8 +12,8 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20240417232016_init3")]
-    partial class init3
+    [Migration("20240428064032_init_1")]
+    partial class init_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,26 +143,35 @@ namespace OnlineShop.EFCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BuyerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BuyerId1")
+                    b.Property<string>("BuyerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreatedDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifyDatePersian")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("SellerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SellerId1")
+                    b.Property<string>("SellerId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SoftDeleteDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isModified")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuyerId1");
+                    b.HasIndex("BuyerId");
 
-                    b.HasIndex("SellerId1");
+                    b.HasIndex("SellerId");
 
                     b.ToTable("OrderHeader", "sale");
                 });
@@ -177,12 +186,27 @@ namespace OnlineShop.EFCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CreatedDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifyDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SoftDeleteDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("isModified")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("productCategoryId")
                         .HasColumnType("uniqueidentifier");
@@ -375,11 +399,11 @@ namespace OnlineShop.EFCore.Migrations
                 {
                     b.HasOne("OnlineShop.Domain.Aggregates.UserManagementAggregates.OnlineShopUser", "Buyer")
                         .WithMany()
-                        .HasForeignKey("BuyerId1");
+                        .HasForeignKey("BuyerId");
 
                     b.HasOne("OnlineShop.Domain.Aggregates.UserManagementAggregates.OnlineShopUser", "Seller")
                         .WithMany()
-                        .HasForeignKey("SellerId1");
+                        .HasForeignKey("SellerId");
 
                     b.Navigation("Buyer");
 

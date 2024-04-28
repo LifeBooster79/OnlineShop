@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShop.EFCore.Migrations
 {
     /// <inheritdoc />
-    public partial class firstMigrate : Migration
+    public partial class init_0 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -206,7 +206,12 @@ namespace OnlineShop.EFCore.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    productCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    productCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    isModified = table.Column<bool>(type: "bit", nullable: false),
+                    ModifyDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsSoftDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    SoftDeleteDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

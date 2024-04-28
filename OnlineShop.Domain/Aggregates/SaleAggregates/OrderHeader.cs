@@ -12,13 +12,17 @@ namespace OnlineShop.Domain.Aggregates.SaleAggregates
     public class OrderHeader:MainEntity
     {
         public Guid Id { get; set; }
-        public string SellerId { get; set; }
-        public string BuyerId { get; set; }
         public DateTime OrderDate { get; set; }
-        // Foreign key properties
+
+        // Foreign key for Seller
+        public string? SellerId { get; set; }
         [ForeignKey("SellerId")]
-        public  OnlineShopUser Seller { get; set; }
+        public virtual OnlineShopUser Seller { get; set; }
+
+        // Foreign key for Buyer
+        public string? BuyerId { get; set; }
         [ForeignKey("BuyerId")]
-        public OnlineShopUser Buyer { get; set; }
+        public virtual OnlineShopUser Buyer { get; set; }
+
     }
 }

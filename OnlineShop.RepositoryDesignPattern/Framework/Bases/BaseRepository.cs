@@ -134,6 +134,15 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
                                     property.SetValue(entity, updatedValue);
                                 }
                             }
+                            //Check The Boolean
+                            if (propertyType.Name == "Boolean")
+                            {
+                                if (Convert.ToInt32(updatedValue) != 0)
+                                {
+                                    property.SetValue(entity, updatedValue);
+                                }
+                            }
+                            
                         }
                     }
                     DbSet.Update(entity);
