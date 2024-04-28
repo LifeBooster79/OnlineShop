@@ -46,6 +46,9 @@ namespace OnlineShop.Application.Services.SaleService
         {
             var products = await _productRepository.Search(searchString, pageSize, pageIndex);
 
+            if(products.Result!=null)
+            products.Result=products.Result.Where(p => p.IsSoftDeleted != true);
+
             ServiceSelectProductDto serviceSearchProductDto = new () { products = products.Result };
 
             return serviceSearchProductDto;
