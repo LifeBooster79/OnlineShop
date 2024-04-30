@@ -5,6 +5,7 @@ using OnlineShop.Application.Dtos.ProductDto;
 using OnlineShop.Domain.Aggregates.SaleAggregates;
 using OnlineShop.Domain.Aggregates.UserManagementAggregates;
 using OnlineShop.RepositoryDesignPattern.Services.Contracts;
+using OnlineShop.RepositoryDesignPattern.Services.Dtos;
 using OnlineShop.RepositoryDesignPattern.Services.Repositories;
 using ResponseFramework;
 using System;
@@ -54,15 +55,18 @@ namespace OnlineShop.Application.Services.SaleService
             }
 
             var result = await _orderRepository.Insert(orderHeader, orderDetails);
-
+            await _orderRepository.SavaeChanges();
             return result;
         }
 
-        public async Task<IResponse<IEnumerable<OrderHeader>>> SelectOrderAsync(string searchString, int pageSize, int pageIndex)
+        public async Task<IResponse<IEnumerable<OrderHeaderDetailDto>>> SelectOrderAsync(string id)
         {
-            var result = await _orderRepository.SelectOrder(searchString, pageSize, pageIndex);
+            var response=await _orderRepository.SelectOrder(id);
 
-            return result;
+            if(response.Result!=null)
+            response.Result=response.Result.Where(o=>o.orderHeader.IsSoftDeleted!=true).ToList();
+
+            return response;
         }
         public async Task<IResponse<IEnumerable<OrderDetail>>> SelectOrderDetialsASync(Guid searchString, int pageSize, int pageIndex)
         {
@@ -70,7 +74,7 @@ namespace OnlineShop.Application.Services.SaleService
 
             return result;
         }
-        public async Task UpdateAsync(ServiceUpdateOrderDto updateDto)
+        public async Task<IResponse<string>> UpdateAsync(ServiceUpdateOrderDto updateDto)
         {
             var orderDetial = new OrderDetail()
             {
@@ -80,12 +84,14 @@ namespace OnlineShop.Application.Services.SaleService
                 Quantity = updateDto.Quantity,
             };
 
-            await _orderRepository.Update(orderDetial, updateDto.orderHeaderId, updateDto.productId);
+            var result=await _orderRepository.Update(orderDetial, updateDto.orderHeaderId, updateDto.productId);
+            await _orderRepository.SavaeChanges();
+            return result;
         }
         public async Task<IResponse<string>> DeleteAsync(ServiceDeleteOrderDto deleteOrderDto)
         {
             var result = await _orderRepository.Delete(deleteOrderDto.orderHeaderId);
-
+            await _orderRepository.SavaeChanges();
             return result;
         }
 

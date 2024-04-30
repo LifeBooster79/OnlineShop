@@ -8,8 +8,9 @@ namespace OnlineShop.Application.Contracts
     {
         Task<IResponse<Product>> InsertAsync(ServiceCreateProductDto createDto);
         Task<ServiceSelectProductDto> SelectAsync(string searchString, int pageSize, int pageIndex);
-        Task UpdateAsync(ServiceUpdateProductDto updateDto);
-        Task DeleteAsync(ServiceDeleteByIdProductDto deleteByIdDto);
-        
+        Task<IResponse<Product>> UpdateAsync(ServiceUpdateProductDto updateDto);
+        Task<IResponse<Product>> DeleteAsync(ServiceDeleteByIdProductDto deleteByIdDto);
+
+
     }
 }

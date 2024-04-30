@@ -34,7 +34,9 @@ namespace OnlineShop.Application.Services.SaleService
 
             };
 
-            return await _productCategoryRepository.Insert(product);
+            var result = await _productCategoryRepository.Insert(product);
+            await _productCategoryRepository.SaveChanges();
+            return result;
 
         }
         public async Task<ServiceSelectProductCategoryDto> SelectAsync(string searchString, int pageSize, int pageIndex)
@@ -46,7 +48,7 @@ namespace OnlineShop.Application.Services.SaleService
             return serviceSearchProductDto;
 
         }
-        public async Task UpdateAsync(ServiceUpdateProductCategoryDto updateDto)
+        public async Task<IResponse<ProductCategory>> UpdateAsync(ServiceUpdateProductCategoryDto updateDto)
         {
             var product = new ProductCategory()
             {
@@ -54,12 +56,17 @@ namespace OnlineShop.Application.Services.SaleService
                 Title = updateDto.Title,
             };
 
-            await _productCategoryRepository.Upadate(product, updateDto.Id);
+           var result=await _productCategoryRepository.Upadate(product, updateDto.Id);
+            await _productCategoryRepository.SaveChanges();
+            return result;
         }
-        public async Task DeleteAsync(ServiceDeleteProductCategoryDto deleteByIdDto)
+        public async Task<IResponse<ProductCategory>> DeleteAsync(ServiceDeleteProductCategoryDto deleteByIdDto)
         {
 
-            await _productCategoryRepository.DeleteById(deleteByIdDto.Id);
+            var result= await _productCategoryRepository.DeleteById(deleteByIdDto.Id);
+            await _productCategoryRepository.SaveChanges();
+            return result;
+
         }
 
     }

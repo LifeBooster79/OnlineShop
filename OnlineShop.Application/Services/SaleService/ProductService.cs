@@ -38,7 +38,9 @@ namespace OnlineShop.Application.Services.SaleService
 
             };
 
-            return await _productRepository.Insert(product);
+            var result=await _productRepository.Insert(product);
+            await _productRepository.SaveChanges();
+            return result;  
 
 
         }
@@ -54,7 +56,7 @@ namespace OnlineShop.Application.Services.SaleService
             return serviceSearchProductDto;
 
         }
-        public async Task UpdateAsync(ServiceUpdateProductDto updateDto)
+        public async Task<IResponse<Product>> UpdateAsync(ServiceUpdateProductDto updateDto)
         {
             //Convert to PersianTime
             //-----------------------------------------------------
@@ -82,9 +84,13 @@ namespace OnlineShop.Application.Services.SaleService
 
             };
 
-            await _productRepository.Upadate(product,updateDto.Id);
+            var result=await _productRepository.Upadate(product,updateDto.Id);
+            await _productRepository.SaveChanges();
+            return result;
+
+         
         }
-        public async Task DeleteAsync(ServiceDeleteByIdProductDto deleteByIdDto)
+        public async Task<IResponse<Product>> DeleteAsync(ServiceDeleteByIdProductDto deleteByIdDto)
         {
             //Convert to PersianTime
             //-----------------------------------------------------
@@ -105,7 +111,10 @@ namespace OnlineShop.Application.Services.SaleService
                 SoftDeleteDatePersian= persianDateTimeString
             };
 
-            await _productRepository.Upadate(product, deleteByIdDto.Id);
+            var result=await _productRepository.Upadate(product, deleteByIdDto.Id);
+            result.Message = "Successfully Deleted";
+            await _productRepository.SaveChanges();
+            return result;
         }
 
 

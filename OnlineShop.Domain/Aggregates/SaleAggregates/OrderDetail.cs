@@ -1,4 +1,5 @@
-﻿using OnlineShop.Domain.Aggregates.SaleAggregates;
+﻿using OnlineShop.Domain.Aggregates.Framework.Base;
+using OnlineShop.Domain.Aggregates.SaleAggregates;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.Domain.Aggregates.SaleAggregates
 {
-    public class OrderDetail
+    public class OrderDetail:MainEntity
     {
         public Guid orderHeaderId { get; set; }
         public Guid productId { get; set; }

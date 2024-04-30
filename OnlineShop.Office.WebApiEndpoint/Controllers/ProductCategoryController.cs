@@ -27,8 +27,8 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
             else
             {
-                await _productCategoryService.InsertAsync(model);
-                return Ok();
+                var result=await _productCategoryService.InsertAsync(model);
+                return Ok(result);
             }
         }
 
@@ -52,8 +52,8 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
             else
             {
-                await _productCategoryService.UpdateAsync(updateDto);
-                return Ok();
+                var result=await _productCategoryService.UpdateAsync(updateDto);
+                return Ok(result);
             }
         }
 
@@ -67,8 +67,8 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
             else
             {
-                await _productCategoryService.DeleteAsync(model);
-                return Ok();
+                var result=await _productCategoryService.DeleteAsync(model);
+                return Ok(result);
             }
         }
     }

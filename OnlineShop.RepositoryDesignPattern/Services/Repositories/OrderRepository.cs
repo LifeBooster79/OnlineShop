@@ -2,10 +2,13 @@
 using OnlineShop.Domain.Aggregates.SaleAggregates;
 using OnlineShop.EFCore;
 using OnlineShop.RepositoryDesignPattern.Services.Contracts;
+using OnlineShop.RepositoryDesignPattern.Services.Dtos;
 using ResponseFramework;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,80 +30,103 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
         public virtual async Task<IResponse<String>> Insert(OrderHeader entity, List<OrderDetail> details)
         {
             var response = new Response<String>();
-
-            using (TransactionScope scope = new TransactionScope())
+ 
+            try
             {
-                try
+
+                if (entity == null || details == null)
                 {
-
-
-                    if (entity == null || details == null)
-                    {
-                        response.Message = "Cant Add In Table";
-                        response.IsSuccessful = false;
-
-                    }
-                    else
-                    {
-
-                        var result = await _context.OrderHeader.AddAsync(entity);
-
-                        foreach (OrderDetail detail in details)
-                        {
-                            await _context.OrderDetail.AddAsync(detail);
-
-                        }
-                        response.Message = "The Order Added";
-                        response.Result = null;
-                        response.IsSuccessful = true;
-
-                        await _context.SaveChangesAsync();
-                        scope.Complete()
-;
-                    }
-
-                    return response;
+                    response.Message = "Cant Add In Table";
+                    response.IsSuccessful = false;
 
                 }
-                catch (Exception ex)
+                else
                 {
-                    
-                    scope.Dispose();
-                    throw;
+
+                    var result = await _context.OrderHeader.AddAsync(entity);
+
+                    foreach (OrderDetail detail in details)
+                    {
+                        await _context.OrderDetail.AddAsync(detail);
+
+                    }
+                    response.Message = "The Order Added";
+                    response.Result = null;
+                    response.IsSuccessful = true;
+
                 }
+
+                return response;
 
             }
-   
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
-        public virtual async Task<IResponse<IEnumerable<OrderHeader>>> SelectOrder(string searchId, int pageSize, int pageIndex)
+
+        public virtual async Task<IResponse<IEnumerable<OrderHeaderDetailDto>>> SelectOrder(string id)
         {
-            var response = new Response<IEnumerable<OrderHeader>>();
+            var response= new Response<IEnumerable<OrderHeaderDetailDto>>();
 
-
-            var orderHeader = _context.OrderHeader.Select(o => o);
-            if (searchId != null)
+            try
             {
+                var enitites=await _context.OrderHeader.Where(o => o.SellerId == id || o.BuyerId==id).Select(s => new OrderHeaderDetailDto()
+                {
+                    orderHeader=s,
+                    orderDetails=_context.OrderDetail.Where(o=>o.orderHeaderId==s.Id).ToList(),
+                }).ToListAsync();
 
-                orderHeader = orderHeader.Where(o => o.SellerId == searchId || o.BuyerId == searchId);
+                if (enitites == null)
+                {
+                    response.Message = "Cant Find The Order";
+                    response.IsSuccessful = false;
+                }
+                else
+                {
+                    response.Result = enitites;
+                    response.Message = null;
+                    response.IsSuccessful = true;
+                }
+
+                return response;
             }
-            orderHeader = orderHeader.Skip((pageIndex - 1) * pageSize).Take(pageSize);
-
-            if (orderHeader == null)
+            catch (Exception ex)
             {
+                throw;
 
-                response.Message = "Cant Find The Order";
-                response.Result = null;
-                response.IsSuccessful = false;
             }
-            else
-            {
-                response.Message =null;
-                response.Result = await orderHeader.ToListAsync();
-                response.IsSuccessful = true;
-            }
-
-            return response;
         }
+        //public virtual async Task<IResponse<IEnumerable<OrderHeader>>> SelectOrder(string searchId, int pageSize, int pageIndex)
+        //{
+        //    var response = new Response<IEnumerable<OrderHeader>>();
+
+
+        //    var orderHeader = _context.OrderHeader.Select(o => o);
+        //    if (searchId != null)
+        //    {
+
+        //        orderHeader = orderHeader.Where(o => o.SellerId == searchId || o.BuyerId == searchId);
+        //    }
+        //    orderHeader = orderHeader.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+        //    if (orderHeader == null)
+        //    {
+
+        //        response.Message = "Cant Find The Order";
+        //        response.Result = null;
+        //        response.IsSuccessful = false;
+        //    }
+        //    else
+        //    {
+        //        response.Message =null;
+        //        response.Result = await orderHeader.ToListAsync();
+        //        response.IsSuccessful = true;
+        //    }
+
+        //    return response;
+        //}
 
         public virtual async Task<IResponse<IEnumerable<OrderDetail>>> SelectOrderDetail(Guid searchId, int pageSize, int pageIndex)
         {
@@ -146,6 +172,18 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
                 }
                 else
                 {
+                    //Convert to PersianTime
+                    //-----------------------------------------------------
+                    PersianCalendar persianCalendar = new PersianCalendar();
+                    DateTime dateTime = DateTime.Now;
+
+                    int year = persianCalendar.GetYear(dateTime);
+                    int month = persianCalendar.GetMonth(dateTime);
+                    int day = persianCalendar.GetDayOfMonth(dateTime);
+
+                    string persianDateTimeString = $"{year}/{month}/{day}";
+                    //-----------------------------------------------------
+
                     foreach (var property in typeof(OrderDetail).GetProperties())
                     {
                         // Get the type of the property
@@ -178,8 +216,10 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
                             }
                         }
                     }
+                    entity.isModified = true;
+                    entity.ModifyDatePersian = persianDateTimeString;
                     _context.OrderDetail.Update(entity);
-                    await _context.SaveChangesAsync();
+                    response.Message = "The Order Updated";
                     response.IsSuccessful = true;
                 }
 
@@ -192,41 +232,73 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
         }
         public virtual async Task<IResponse<String>> Delete(Guid orderHeaderId)
         {
-            using (TransactionScope scope=new TransactionScope())
+            try
             {
-                try
+                var response = new Response<String>();
+
+
+
+                var orderHeader = await _context.OrderHeader.FindAsync(orderHeaderId);
+
+                var orderDetails = _context.OrderDetail.Where(o => o.orderHeaderId == orderHeaderId);
+
+                if (orderHeader == null)
                 {
-                    var response = new Response<String>();
+                    response.Message = "Cant Find The Order";
+                    response.IsSuccessful = false;
+                }
+                else
+                {
+                    //Convert to PersianTime
+                    //-----------------------------------------------------
+                    PersianCalendar persianCalendar = new PersianCalendar();
+                    DateTime dateTime = DateTime.Now;
 
-                    var orderHeader = await _context.OrderHeader.FindAsync(orderHeaderId);
+                    int year = persianCalendar.GetYear(dateTime);
+                    int month = persianCalendar.GetMonth(dateTime);
+                    int day = persianCalendar.GetDayOfMonth(dateTime);
 
-                    var orderDetails = _context.OrderDetail.Where(o => o.orderHeaderId == orderHeaderId);
+                    string persianDateTimeString = $"{year}/{month}/{day}";
+                    //-----------------------------------------------------
+
+                    orderHeader.IsSoftDeleted = true;
+
+                    orderHeader.SoftDeleteDatePersian = persianDateTimeString;
+
+                    List<OrderDetail> removedOrderDetails=new List<OrderDetail>();
+
+                    foreach (var orderDetail in orderDetails)
+                    {
+                        orderDetail.IsSoftDeleted = true;
+                        orderDetail.SoftDeleteDatePersian= persianDateTimeString;   
+                        removedOrderDetails.Append(orderDetail);
+                    }
 
                     // Remove all related OrderDetails
-                    _context.OrderDetail.RemoveRange(orderDetails);
+                    _context.OrderDetail.UpdateRange(removedOrderDetails);
 
                     // Remove the OrderHeader
-                    _context.OrderHeader.Remove(orderHeader);
+                    _context.OrderHeader.Update(orderHeader);
 
                     response.Message = "The Order Deleted";
                     response.Result = null;
                     response.IsSuccessful = true;
-
-                    await _context.SaveChangesAsync();
-
-                    scope.Complete();
-
-                    return response;
-
                 }
-                catch (Exception)
-                {
-                    scope.Dispose();
-                    throw;
-                }
+
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
             }
 
         }
 
+        public virtual async Task SavaeChanges()
+        {
+            await _context.SaveChangesAsync();
+        }
+
     }
+
 }

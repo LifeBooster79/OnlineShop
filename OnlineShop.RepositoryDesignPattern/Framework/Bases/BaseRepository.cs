@@ -42,13 +42,13 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
 
                 if (entity is null)
                 {
-                    response.Message = $"Cant Delete In Product Table";
+                    response.Message = $"Cant Create Record In Table";
                     response.IsSuccessful = false;
                 }
                 else
                 {
                     await DbSet.AddAsync(entity);
-                    await SaveChanges();
+                    response.Message = $"Record Created Successfully";
                     response.IsSuccessful = true;
                 }
 
@@ -146,7 +146,7 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
                         }
                     }
                     DbSet.Update(entity);
-                    await SaveChanges();
+                    response.Message = "Record Updated Successfully";
                     response.IsSuccessful = true;
                 }
 
@@ -211,14 +211,22 @@ namespace OnlineShop.RepositoryDesignPattern.Framework.Bases
         {
             try
             {
-                var response = await FindById(Id);
+                var response=new Response<TEntity>();
 
-                if (response.IsSuccessful == true)
+                var entity=await DbSet.FindAsync(Id);
+
+                if (entity is null)
                 {
-                   DbSet.Remove(response.Result);
-                   await SaveChanges();
-                }
+                    response.Message = "Cant Find In Table";
+                    response.IsSuccessful = false;
 
+                }
+                else
+                {
+                    DbSet.Remove(entity);
+                    response.Message = "Record Deleted Successfully";
+                    response.IsSuccessful = true;
+                }
                 return response;
             }
             catch (Exception)

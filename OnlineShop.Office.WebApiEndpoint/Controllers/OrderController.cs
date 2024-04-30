@@ -39,9 +39,9 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> SelectOrder(string searchString, int pageSize, int pageIndex)
+        public async Task<IActionResult> SelectOrder([FromBody] ServiceSelectOrderDto model)
         {
-            var result = await _orderService.SelectOrderAsync(searchString, pageSize, pageIndex);
+            var result = await _orderService.SelectOrderAsync(model.id);
 
             return Ok(result);
             
@@ -66,8 +66,8 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
             else
             {
-                await _orderService.UpdateAsync(updateDto);
-                return Ok();
+                var result=await _orderService.UpdateAsync(updateDto);
+                return Ok(result);
             }
         }
 
