@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "83f99704-8a4d-48ed-a483-82e2c36f4b0a",
+		"name": "Product",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34617438"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5203/api/Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Nokia 0011\",\r\n  \"unitPrice\": 100,\r\n  \"code\": \"6\",\r\n  \"productCategoryId\": \"795d3b71-b931-4e5c-ffd6-08dc68e87773\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/Product/?pageIndex=2&pageSize=2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5203/api/Product/?pageIndex=2&pageSize=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Product",
+						""
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/Product",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"35CD03E3-221B-4967-4A4F-08DC68EB66CE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/Product",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"35CD03E3-221B-4967-4A4F-08DC68EB66CE\",\r\n    \"unitprice\":300\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Product"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

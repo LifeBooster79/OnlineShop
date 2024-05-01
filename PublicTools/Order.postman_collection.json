@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "e9f2041f-d8d5-4b1a-90a6-94f7955b3d86",
+		"name": "Order",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34617438"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5203/api/Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"orderHeader\": {\r\n    \"seller\": \"189a46c1-fd5e-46b2-b709-53b2dd1dc785\",\r\n    \"buyer\": \"fe9a854d-7e89-484f-8225-b9bed85ff917\"\r\n  },\r\n  \"orderDetails\": [\r\n    {\r\n      \"productId\": \"36F9FCD1-CE60-41C8-98F5-08DC68F0145A\",\r\n      \"unitPrice\": 500,\r\n      \"quantity\": 1\r\n    },\r\n    {\r\n      \"productId\": \"4B11731D-FAD1-4A56-9DD0-08DC675BB7E4\",\r\n      \"unitPrice\": 1000,\r\n      \"quantity\": 1\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/Order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/Order",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"189a46c1-fd5e-46b2-b709-53b2dd1dc785\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/Order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/Order",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderHeaderId\":\"683EF689-C465-4A4E-A4CF-898D009B8325\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/Order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/Order",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"orderHeaderId\": \"4CDCB3AA-4E47-4178-8EA6-DB6044A3CCA7\",\r\n  \"productId\": \"4B11731D-FAD1-4A56-9DD0-08DC675BB7E4\",\r\n  \"unitPrice\": 10000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/Order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"Order"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

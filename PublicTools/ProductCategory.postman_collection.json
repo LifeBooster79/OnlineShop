@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "04bf6fc1-99c1-403a-bcb2-1d473df12492",
+		"name": "ProductCategory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34617438"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5203/api/ProductCategory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Nokia\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/ProductCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"ProductCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/ProductCategory/?searchString=Nokia&pageIndex=1&pageSize=1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/ProductCategory/?searchString=Nokia&pageIndex=1&pageSize=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"ProductCategory",
+						""
+					],
+					"query": [
+						{
+							"key": "searchString",
+							"value": "Nokia"
+						},
+						{
+							"key": "pageIndex",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/ProductCategory",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"795D3B71-B931-4E5C-FFD6-08DC68E87773\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/ProductCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"ProductCategory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5203/api/ProductCategory",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"e6ecbd70-6b54-4fdf-b22e-08dc690fd656\",\r\n    \"title\":\"Samsung\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5203/api/ProductCategory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5203",
+					"path": [
+						"api",
+						"ProductCategory"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
