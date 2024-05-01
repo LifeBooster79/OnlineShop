@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Services.SaleService;
 using OnlineShop.Application.Services.UserManagementService;
@@ -10,6 +12,7 @@ using OnlineShop.EFCore;
 using OnlineShop.RepositoryDesignPattern.Framework.Abstract;
 using OnlineShop.RepositoryDesignPattern.Services.Contracts;
 using OnlineShop.RepositoryDesignPattern.Services.Repositories;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,12 +32,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 
-
-
-//builder.Services.AddScoped<IUserService, UserService>();
-//builder.Services.AddScoped<IUserRepository,UserRepository >();
-
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddIdentity<OnlineShopUser,OnlineShopRole>()
     .AddEntityFrameworkStores<OnlineShopDbContext>()
@@ -43,14 +41,26 @@ builder.Services.AddIdentity<OnlineShopUser,OnlineShopRole>()
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
-// Configure other Identity options as needed
-//builder.Services.Configure<IdentityOptions>(options =>
-//{
-//    // Configure password settings, sign-in settings, etc.
-//    options.Password.RequiredLength = 6;
-//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-//    options.SignIn.RequireConfirmedEmail = true; // Example setting
-//});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+        {
+            options.SaveToken = true;
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+            };
+        });
+
 
 var app = builder.Build();
 

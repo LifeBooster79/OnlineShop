@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Dtos.ProductCategoryDto;
@@ -32,6 +33,7 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("api/[controller]")]
         public async Task<IActionResult> Read(string? searchString, int pageIndex, int pageSize)
