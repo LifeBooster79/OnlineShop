@@ -8,8 +8,7 @@ namespace OnlineShop.Application.Contracts
 {
     public interface IUserService
     {
-        Task<IdentityResult> Register(ServiceCreateUserDto userDto);
-        Task<JwtSecurityToken> Login(ServiceLoginDto userDto);
+        Task<IdentityResult> Update(ServiceUpdateUserDto updateUserDto);
         Task<IdentityResult> Delete(string id);
     }
 }

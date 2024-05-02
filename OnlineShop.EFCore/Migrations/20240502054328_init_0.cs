@@ -180,7 +180,12 @@ namespace OnlineShop.EFCore.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SellerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    isModified = table.Column<bool>(type: "bit", nullable: false),
+                    ModifyDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsSoftDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    SoftDeleteDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -233,7 +238,12 @@ namespace OnlineShop.EFCore.Migrations
                     orderHeaderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     productId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    isModified = table.Column<bool>(type: "bit", nullable: false),
+                    ModifyDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsSoftDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    SoftDeleteDatePersian = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

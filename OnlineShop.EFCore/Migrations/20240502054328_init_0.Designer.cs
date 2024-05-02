@@ -12,15 +12,15 @@ using OnlineShop.EFCore;
 namespace OnlineShop.EFCore.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20240428064032_init_1")]
-    partial class init_1
+    [Migration("20240502054328_init_0")]
+    partial class init_0
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -124,11 +124,26 @@ namespace OnlineShop.EFCore.Migrations
                     b.Property<Guid>("productId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CreatedDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifyDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("SoftDeleteDatePersian")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("isModified")
+                        .HasColumnType("bit");
 
                     b.HasKey("orderHeaderId", "productId");
 
