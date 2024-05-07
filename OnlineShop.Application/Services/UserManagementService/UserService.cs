@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using OnlineShop.Application.Contracts;
@@ -37,15 +39,49 @@ namespace OnlineShop.Application.Services.UserManagementService
             _configuration = configuration;
         }
 
+        public async Task<IResponse<ServiceSelectUsersDto>> GetUsers()
+        {
+            var response=new Response<ServiceSelectUsersDto>();
+
+            var users = await _userManager.Users.ToListAsync();
+
+            ServiceSelectUsersDto usersDto = new ServiceSelectUsersDto();
+
+            usersDto.selectUsers = new List<SelectUserDto>();
+
+            if (users != null)
+            {
+                foreach (var user in users)
+                {
+                    usersDto.selectUsers.Add(new SelectUserDto()
+                    {
+                        Id = user.Id,
+                        userName = user.UserName,
+                        email = user.Email,
+                        phone = user.PhoneNumber
+                    });
+
+                }
+                response.IsSuccessful = true;
+                response.Result= usersDto;
+            }
+            else
+            {
+                response.Message = "Cant Find Any Users";
+                response.IsSuccessful = false;
+            }
+
+            return response;
+        }
         public async Task<IdentityResult> Update(ServiceUpdateUserDto updateUserDto)
         {
             var user = await _userManager.FindByIdAsync(updateUserDto.Id);
             var errors=new List<string>();  
             if (user != null)
             {
-                user.UserName = updateUserDto.UserName;
-                user.Email = updateUserDto.Email;
-                user.PhoneNumber = updateUserDto.PhoneNumber;
+                user.UserName = updateUserDto.userName;
+                user.Email = updateUserDto.email;
+                user.PhoneNumber = updateUserDto.phone;
                 return await _userManager.UpdateAsync(user);
             }
             else
@@ -63,9 +99,9 @@ namespace OnlineShop.Application.Services.UserManagementService
 
             
         }
-        public async Task<IdentityResult> Delete(string id)
+        public async Task<IdentityResult> Delete(ServiceDeleteUserDto deleteDto)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(deleteDto.Id);
 
             IdentityResult result=new IdentityResult();
 
@@ -74,6 +110,36 @@ namespace OnlineShop.Application.Services.UserManagementService
             }
             
             return result;
+        }
+        public async Task<IResponse<string>> EditUserRoles(string userId, List<string> roles)
+        {
+            var response=new Response<string>();
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                response.IsSuccessful = false;
+                response.Message = "Cant Find The User";
+                return response;
+            }
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            foreach (var item in currentRoles)
+            {
+                if (!roles.Any(c => c == item))
+                {
+                    var removeRoleResult = await _userManager.RemoveFromRoleAsync(user, item);
+                }
+            }
+            foreach (var item in roles)
+            {
+                var isInRole = await _userManager.IsInRoleAsync(user, item);
+                if (!isInRole)
+                {
+                    var addToRoleResult = await _userManager.AddToRoleAsync(user, item);
+                }
+            }
+            response.IsSuccessful = true;
+            return response;
+
         }
     }
 }

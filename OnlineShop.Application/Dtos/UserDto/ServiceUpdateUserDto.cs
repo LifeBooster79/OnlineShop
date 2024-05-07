@@ -8,12 +8,11 @@ namespace OnlineShop.Application.Dtos.UserDto
 {
     public class ServiceUpdateUserDto
     {
-        public string Id { get; set; }
-        public  string UserName { get; set; }
-        public  string Password { get; set; }
+        public required string Id { get; set; }
+        public  required string userName { get; set; }
         //Email
-        public  string Email { get; set; }
+        public required string email { get; set; }
         //PhoneNumber
-        public  string PhoneNumber { get; set; }
+        public required string phone { get; set; }
     }
 }

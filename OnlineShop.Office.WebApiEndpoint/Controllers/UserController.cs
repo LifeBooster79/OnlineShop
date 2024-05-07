@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -43,10 +45,24 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
                 return BadRequest();
             }
         }
-        [HttpDelete]
-        public async Task<IActionResult> Delete(string id)
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
         {
-            var result=await _userService.Delete(id);   
+            var result= await _userService.GetUsers();
+            if (result.IsSuccessful)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(ServiceDeleteUserDto model)
+        {
+            var result=await _userService.Delete(model);   
             if (result.Succeeded)
             {
                 return Ok(result);
@@ -56,7 +72,19 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
                 return BadRequest(result.Errors);
             }
         }
-
+        [HttpPost]
+        public async Task<IActionResult> EditUserRole(ServiceEditUserRoleDto model)
+        {
+            var result = await _userService.EditUserRoles(model.userId,model.roles);
+            if (result.IsSuccessful)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
   
 
     }

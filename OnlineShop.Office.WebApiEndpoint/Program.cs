@@ -33,6 +33,8 @@ builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddIdentity<OnlineShopUser,OnlineShopRole>()
     .AddEntityFrameworkStores<OnlineShopDbContext>()
@@ -61,6 +63,15 @@ builder.Services.AddAuthentication(options =>
             };
         });
 
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        }));
+
+
 
 var app = builder.Build();
 
@@ -72,7 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
-
+app.UseCors("MyPolicy");
 app.MapControllers();
 
 app.Run();

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Dtos.RoleDto;
 using OnlineShop.Application.Dtos.UserDto;
 using OnlineShop.Domain.Aggregates.UserManagementAggregates;
@@ -9,48 +11,54 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RoleController : ControllerBase
     {
-        private readonly RoleManager<OnlineShopRole> _roleManager;
+        private readonly IRoleService _roleService;
 
-        public RoleController(RoleManager<OnlineShopRole> roleManager)
+        public RoleController(IRoleService roleService)
         {
-            _roleManager = roleManager;
+            _roleService = roleService;
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterRole(ServiceCreateRoleDto createRoleModel)
         {
-
-            var role = new OnlineShopRole
-            {
-                Name = createRoleModel.RoleName
-            };
-            var result = await _roleManager.CreateAsync(role);
+            var result = await _roleService.RegisterRole(createRoleModel);
             if (result.Succeeded)
             {
-                return Ok(role);
+                return Ok(result);
             }
             else
             {
-                return BadRequest(result.Errors);
+                return BadRequest(result);
             }
         }
-
-        [HttpDelete]
-        public async Task<IActionResult> Delete(string id)
+        [HttpGet]
+        public async Task<IActionResult> GetRoles()
         {
-            var role = await _roleManager.FindByIdAsync(id);
-            var result = await _roleManager.DeleteAsync(role);
-            if (result.Succeeded)
+            var result=await _roleService.GetRoles();
+            if (result.IsSuccessful)
             {
-                return Ok(role);
+                return Ok(result);
             }
             else
             {
-                return BadRequest(result.Errors);
-            };
-
+                return BadRequest(result);
+            }
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(ServiceDeleteRoleDto model)
+        {
+            var result = await _roleService.Delete(model.Id);
+            if (result.IsSuccessful)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
         }
 
 
