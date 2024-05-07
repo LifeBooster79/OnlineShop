@@ -21,5 +21,7 @@ namespace OnlineShop.Application.Dtos.UserDto
 
         public string? phone { get; set; }
 
+        public IEnumerable<string>? roles { get; set; }
+
     }
 }

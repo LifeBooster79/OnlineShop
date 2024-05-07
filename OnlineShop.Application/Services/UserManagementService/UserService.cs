@@ -53,12 +53,15 @@ namespace OnlineShop.Application.Services.UserManagementService
             {
                 foreach (var user in users)
                 {
+                    var roles=await _userManager.GetRolesAsync(user);
                     usersDto.selectUsers.Add(new SelectUserDto()
                     {
                         Id = user.Id,
                         userName = user.UserName,
                         email = user.Email,
-                        phone = user.PhoneNumber
+                        phone = user.PhoneNumber,
+                        roles=roles
+        
                     });
 
                 }

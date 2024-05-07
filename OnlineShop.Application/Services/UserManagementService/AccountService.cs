@@ -36,8 +36,8 @@ namespace OnlineShop.Application.Services.UserManagementService
                 Email = userDto.Email,
                 PhoneNumber = userDto.PhoneNumber
             };
-
             var result = await _userManager.CreateAsync(user, userDto.Password);
+            await _userManager.AddToRoleAsync(user, "Guest");
             return result;
 
         }
