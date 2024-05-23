@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace OnlineShop.Backoffice.Controllers
 {
+    //Test
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
