@@ -16,8 +16,8 @@ namespace OnlineShop.Domain.Aggregates.SaleAggregates
         public decimal UnitPrice { get; set; }
         public decimal Quantity { get; set; }
         [ForeignKey("orderHeaderId")]
-        public OrderHeader OrderHeader { get; set; }
+        public OrderHeader? OrderHeader { get; set; }
         [ForeignKey("productId")]
-        public Product Product { get; set; }
+        public Product? Product { get; set; }
     }
 }

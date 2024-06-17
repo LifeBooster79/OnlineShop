@@ -27,14 +27,14 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
 
         }
 
-        public virtual async Task<IResponse<String>> Insert(OrderHeader entity, List<OrderDetail> details)
+        public virtual async Task<IResponse<String>> Insert(OrderHeader entity)
         {
             var response = new Response<String>();
  
             try
             {
 
-                if (entity == null || details == null)
+                if (entity == null )
                 {
                     response.Message = "Cant Add In Table";
                     response.IsSuccessful = false;
@@ -42,14 +42,13 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
                 }
                 else
                 {
-
                     var result = await _context.OrderHeader.AddAsync(entity);
 
-                    foreach (OrderDetail detail in details)
-                    {
-                        await _context.OrderDetail.AddAsync(detail);
+                    //foreach (OrderDetail detail in details)
+                    //{
+                    //    await _context.OrderDetail.AddAsync(detail);
 
-                    }
+                    //}
                     response.Message = "The Order Added";
                     response.Result = null;
                     response.IsSuccessful = true;
@@ -66,17 +65,20 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
 
         }
 
-        public virtual async Task<IResponse<IEnumerable<OrderHeaderDetailDto>>> SelectOrder(string id)
+        public virtual async Task<IResponse<IEnumerable<OrderHeader>>> SelectOrder(string id)
         {
-            var response= new Response<IEnumerable<OrderHeaderDetailDto>>();
+            var response= new Response<IEnumerable<OrderHeader>>();
 
             try
             {
-                var enitites=await _context.OrderHeader.Where(o => o.SellerId == id || o.BuyerId==id).Select(s => new OrderHeaderDetailDto()
-                {
-                    orderHeader=s,
-                    orderDetails=_context.OrderDetail.Where(o=>o.orderHeaderId==s.Id).ToList(),
-                }).ToListAsync();
+                //var enitites=await _context.OrderHeader.Where(o => o.SellerId == id || o.BuyerId==id).Select(s => new OrderHeaderDetailDto()
+                //{
+                //    orderHeader=s,
+                //    orderDetails=_context.OrderDetail.Where(o=>o.orderHeaderId==s.Id).ToList(),
+                //}).ToListAsync();
+
+
+                var enitites = await _context.OrderHeader.Include(o=>o.orderDetails).ToListAsync();
 
                 if (enitites == null)
                 {
@@ -158,77 +160,107 @@ namespace OnlineShop.RepositoryDesignPattern.Services.Repositories
             return response;
 
         }
-        public virtual async Task<IResponse<string>> Update(OrderDetail updatedEntity, Guid orderHeaderId,Guid productId)
+        public virtual async Task<IResponse<string>> Update(OrderHeader orderHeader)
         {
             var response = new Response<string>();
+
+            //Convert to PersianTime
+            //-----------------------------------------------------
+            PersianCalendar persianCalendar = new PersianCalendar();
+            DateTime dateTime = DateTime.Now;
+
+            int year = persianCalendar.GetYear(dateTime);
+            int month = persianCalendar.GetMonth(dateTime);
+            int day = persianCalendar.GetDayOfMonth(dateTime);
+
+            string persianDateTimeString = $"{year}/{month}/{day}";
+            //-----------------------------------------------------
+
+
             try
             {
-                var entity = await _context.OrderDetail.FirstOrDefaultAsync(o=>o.productId==productId && o.orderHeaderId==orderHeaderId);
+                orderHeader.isModified = true;
+                orderHeader.ModifyDatePersian = persianDateTimeString;
+                _context.OrderHeader.Update(orderHeader);
+                response.Message = "The Order Updated";
+                response.IsSuccessful = true;
 
-                if (entity is null)
-                {
-                    response.Message = "Cant Find In Table";
-                    response.IsSuccessful = false;
-                }
-                else
-                {
-                    //Convert to PersianTime
-                    //-----------------------------------------------------
-                    PersianCalendar persianCalendar = new PersianCalendar();
-                    DateTime dateTime = DateTime.Now;
-
-                    int year = persianCalendar.GetYear(dateTime);
-                    int month = persianCalendar.GetMonth(dateTime);
-                    int day = persianCalendar.GetDayOfMonth(dateTime);
-
-                    string persianDateTimeString = $"{year}/{month}/{day}";
-                    //-----------------------------------------------------
-
-                    foreach (var property in typeof(OrderDetail).GetProperties())
-                    {
-                        // Get the type of the property
-                        var propertyType = property.PropertyType;
-
-                        var updatedValue = property.GetValue(updatedEntity);
-
-                        //Check Null Property
-                        if (propertyType.Name == "String" && updatedValue != null)
-                        {
-                            property.SetValue(entity, updatedValue);
-                        }
-                        else
-                        {
-                            //Check Decimal Property
-                            if (propertyType.Name == "Decimal")
-                            {
-                                if (Convert.ToInt32(updatedValue) != 0)
-                                {
-                                    property.SetValue(entity, updatedValue);
-                                }
-                            }
-                            //Check Guid Propery
-                            if (propertyType.Name == "Guid")
-                            {
-                                if ((Guid)updatedValue != Guid.Empty)
-                                {
-                                    property.SetValue(entity, updatedValue);
-                                }
-                            }
-                        }
-                    }
-                    entity.isModified = true;
-                    entity.ModifyDatePersian = persianDateTimeString;
-                    _context.OrderDetail.Update(entity);
-                    response.Message = "The Order Updated";
-                    response.IsSuccessful = true;
-                }
-
-                return response;
             }
-            catch (Exception)
-            {
+            catch (Exception ex) {
+
                 throw;
+            
             }
+            
+            return response;    
+            //try
+            //{
+            //    var entity = await _context.OrderDetail.FirstOrDefaultAsync(o=>o.productId==productId && o.orderHeaderId==orderHeaderId);
+
+            //    if (entity is null)
+            //    {
+            //        response.Message = "Cant Find In Table";
+            //        response.IsSuccessful = false;
+            //    }
+            //    else
+            //    {
+            //        //Convert to PersianTime
+            //        //-----------------------------------------------------
+            //        PersianCalendar persianCalendar = new PersianCalendar();
+            //        DateTime dateTime = DateTime.Now;
+
+            //        int year = persianCalendar.GetYear(dateTime);
+            //        int month = persianCalendar.GetMonth(dateTime);
+            //        int day = persianCalendar.GetDayOfMonth(dateTime);
+
+            //        string persianDateTimeString = $"{year}/{month}/{day}";
+            //        //-----------------------------------------------------
+
+            //        foreach (var property in typeof(OrderDetail).GetProperties())
+            //        {
+            //            // Get the type of the property
+            //            var propertyType = property.PropertyType;
+
+            //            var updatedValue = property.GetValue(updatedEntity);
+
+            //            //Check Null Property
+            //            if (propertyType.Name == "String" && updatedValue != null)
+            //            {
+            //                property.SetValue(entity, updatedValue);
+            //            }
+            //            else
+            //            {
+            //                //Check Decimal Property
+            //                if (propertyType.Name == "Decimal")
+            //                {
+            //                    if (Convert.ToInt32(updatedValue) != 0)
+            //                    {
+            //                        property.SetValue(entity, updatedValue);
+            //                    }
+            //                }
+            //                //Check Guid Propery
+            //                if (propertyType.Name == "Guid")
+            //                {
+            //                    if ((Guid)updatedValue != Guid.Empty)
+            //                    {
+            //                        property.SetValue(entity, updatedValue);
+            //                    }
+            //                }
+            //            }
+            //        }
+            //        entity.isModified = true;
+            //        entity.ModifyDatePersian = persianDateTimeString;
+            //        _context.OrderDetail.Update(entity);
+            //        response.Message = "The Order Updated";
+            //        response.IsSuccessful = true;
+            //    }
+
+            //    return response;
+            //}
+            //catch (Exception)
+            //{
+            //    throw;
+            //}
         }
         public virtual async Task<IResponse<String>> Delete(Guid orderHeaderId)
         {

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OnlineShop.Application.Contracts;
 using OnlineShop.Application.Services.SaleService;
@@ -24,7 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionstring =builder.Configuration.GetConnectionString("OnlineShop");
-builder.Services.AddDbContext<OnlineShopDbContext>(option=>option.UseSqlServer(connectionstring));
+builder.Services.AddDbContext<OnlineShopDbContext>(options=>{options.UseSqlServer(connectionstring);});
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
@@ -71,6 +72,10 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy",
             .AllowAnyHeader();
         }));
 
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
 
 
 var app = builder.Build();

@@ -14,6 +14,9 @@ namespace OnlineShop.Domain.Aggregates.SaleAggregates
         public Guid Id { get; set; }
         public DateTime OrderDate { get; set; }
 
+        //OrderDetials
+        public ICollection<OrderDetail> orderDetails { get; set; }
+
         // Foreign key for Seller
         public string? SellerId { get; set; }
         [ForeignKey("SellerId")]

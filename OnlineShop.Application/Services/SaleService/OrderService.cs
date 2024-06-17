@@ -51,20 +51,24 @@ namespace OnlineShop.Application.Services.SaleService
                     productId = orderDetailDto.productId,
                     UnitPrice = orderDetailDto.UnitPrice,
                     Quantity = orderDetailDto.Quantity,
+                    OrderHeader=null,
+                    Product=null,
                 });
             }
 
-            var result = await _orderRepository.Insert(orderHeader, orderDetails);
+            orderHeader.orderDetails = orderDetails;    
+
+            var result = await _orderRepository.Insert(orderHeader);
             await _orderRepository.SavaeChanges();
             return result;
         }
 
-        public async Task<IResponse<IEnumerable<OrderHeaderDetailDto>>> SelectOrderAsync(string id)
+        public async Task<IResponse<IEnumerable<OrderHeader>>> SelectOrderAsync(string id)
         {
             var response=await _orderRepository.SelectOrder(id);
 
             if(response.Result!=null)
-            response.Result=response.Result.Where(o=>o.orderHeader.IsSoftDeleted!=true).ToList();
+            response.Result=response.Result.Where(o=>o.IsSoftDeleted!=true).ToList();
 
             return response;
         }
@@ -76,15 +80,17 @@ namespace OnlineShop.Application.Services.SaleService
         }
         public async Task<IResponse<string>> UpdateAsync(ServiceUpdateOrderDto updateDto)
         {
-            var orderDetial = new OrderDetail()
+
+            var orderHeader = new OrderHeader()
             {
-                orderHeaderId = updateDto.orderHeaderId,
-                productId = updateDto.productId,
-                UnitPrice = updateDto.UnitPrice,
-                Quantity = updateDto.Quantity,
+                Id = updateDto.Id,
+                OrderDate = updateDto.OrderDate,
+                orderDetails = updateDto.orderDetails,
+                SellerId = updateDto.SellerId,
+                BuyerId = updateDto.BuyerId,
             };
 
-            var result=await _orderRepository.Update(orderDetial, updateDto.orderHeaderId, updateDto.productId);
+            var result=await _orderRepository.Update(orderHeader);
             await _orderRepository.SavaeChanges();
             return result;
         }

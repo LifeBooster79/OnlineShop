@@ -1,5 +1,8 @@
-﻿using System;
+﻿using OnlineShop.Domain.Aggregates.SaleAggregates;
+using OnlineShop.Domain.Aggregates.UserManagementAggregates;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +11,18 @@ namespace OnlineShop.Application.Dtos.OrderDto
 {
     public class ServiceUpdateOrderDto
     {
-        public required Guid orderHeaderId { get; set; }
-        public required Guid productId { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal Quantity { get; set; }
+        public Guid Id { get; set; }
+        public DateTime OrderDate { get; set; }
+
+        //OrderDetials
+        public ICollection<OrderDetail> orderDetails { get; set; }
+
+        // Foreign key for Seller
+        public string? SellerId { get; set; }
+
+        // Foreign key for Buyer
+        public string? BuyerId { get; set; }
     }
+
+
 }

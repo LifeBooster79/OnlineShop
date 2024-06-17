@@ -39,9 +39,9 @@ namespace OnlineShop.Office.WebApiEndpoint.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> SelectOrder([FromBody] ServiceSelectOrderDto model)
+        public async Task<IActionResult> SelectOrder()
         {
-            var result = await _orderService.SelectOrderAsync(model.id);
+            var result = await _orderService.SelectOrderAsync(null);
 
             return Ok(result);
             
